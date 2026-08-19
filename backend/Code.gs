@@ -53,12 +53,17 @@ function telegramApi_(method, payload) {
   const token = getProp_('TELEGRAM_BOT_TOKEN');
   if (!token) return null;
   const url = `https://api.telegram.org/bot${token}/${method}`;
-  return UrlFetchApp.fetch(url, {
+  const res = UrlFetchApp.fetch(url, {
     method: 'post',
     contentType: 'application/json',
     payload: JSON.stringify(payload),
     muteHttpExceptions: true
   });
+  // نسجّل أي رد فشل (code != 200) بالـ Execution log عشان يسهل تشخيص أي مشكلة تيليجرام مستقبلاً
+  if (res.getResponseCode() !== 200) {
+    Logger.log(`telegramApi_ ${method} failed (${res.getResponseCode()}): ${res.getContentText()}`);
+  }
+  return res;
 }
 
 function getSheet_(name) {
@@ -274,7 +279,8 @@ function handleTelegramUpdate_(update) {
   if (update.message) {
     const msg = update.message;
     const chatId = msg.chat.id;
-    const text = (msg.text || '').trim();
+    // تيليجرام أحياناً يرسل الأمر بصيغة "/status@اسم_البوت" (خصوصاً لو انتقي من قائمة الأوامر) — نتجاهل الجزء بعد @
+    const text = (msg.text || '').trim().split('@')[0];
 
     if (!isOwner_(chatId)) {
       // أول رسالة من صاحب المشروع تُستخدم للتعرّف على OWNER_CHAT_ID لو ما كان معبّى بعد
