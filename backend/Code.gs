@@ -410,17 +410,22 @@ function normalizeDate_(raw) {
 }
 
 /**
+ * ⚠️ عدّل هذا الرابط ليطابق رابط /exec الفعلي لآخر نشر عندك (Deploy → Manage deployments)
+ * لا تستخدم ScriptApp.getService().getUrl() هنا — لما تشغّل الدالة يدوياً من المحرر
+ * ترجع رابط /dev الخاص (يحتاج تسجيل دخولك) مو /exec العام، وتيليجرام يرفضه بخطأ 401.
+ */
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzCJfZetPOL_xaAeYcTOzSeYuMrCcWYQvYZFSQB1G_OvfpTVJqkHq3DyzojPk5L5qgIQw/exec';
+
+/**
  * دالة تشغّلها يدوياً مرة وحدة بس من داخل محرر Apps Script (زر ▶ Run)
  * بعد ما تضبط TELEGRAM_BOT_TOKEN — تربط الـ webhook بين تيليجرام وهذا الـ Web App.
- * لازم تكون نشرت الكود كـ Web App أول (Deploy) وتاخذ رابط /exec الحالي.
  */
 function setupTelegramWebhook() {
   const token = getProp_('TELEGRAM_BOT_TOKEN');
-  const webAppUrl = ScriptApp.getService().getUrl(); // رابط الـ /exec الحالي بعد آخر نشر
   const res = UrlFetchApp.fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
     method: 'post',
     contentType: 'application/json',
-    payload: JSON.stringify({ url: webAppUrl }),
+    payload: JSON.stringify({ url: WEB_APP_URL }),
     muteHttpExceptions: true
   });
   Logger.log(res.getContentText());
