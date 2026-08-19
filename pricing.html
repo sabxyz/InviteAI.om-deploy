@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>باقاتنا — اختر ما يناسب مناسبتك</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Cairo:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Cairo',sans-serif; background:#F6F5F1; color:#211F1B; }
+  @media (prefers-reduced-motion: reduce) { *{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
+
+  .page-header { text-align:center; padding: 48px 24px 12px; }
+  .page-header .eyebrow { font-size:.76rem; letter-spacing:.2em; color:#A79E8C; font-weight:700; }
+  .page-header h1 { font-family:'Reem Kufi',sans-serif; font-weight:700; font-size:1.7rem; margin-top:10px; }
+  .page-header p { font-size:.88rem; color:#6b6a5c; margin-top:8px; max-width:340px; margin-inline:auto; line-height:1.8; }
+
+  .plans { max-width: 480px; margin: 24px auto 10px; padding: 0 20px; display:flex; flex-direction:column; gap:22px; }
+
+  .plan {
+    background:#fff; border-radius: 22px; padding: 28px 24px;
+    box-shadow: 0 10px 30px rgba(30,25,15,0.06);
+    border: 1.5px solid transparent;
+    position: relative;
+  }
+  .plan.featured {
+    border-color: #C98A7D;
+    box-shadow: 0 16px 40px rgba(201,138,125,0.18);
+    transform: scale(1.02);
+  }
+  .ribbon {
+    position: absolute; top: -12px; right: 24px;
+    background: #C98A7D; color:#fff; font-size:.72rem; font-weight:700;
+    padding: 5px 16px; border-radius: 20px;
+  }
+  .plan-head { display:flex; align-items:baseline; justify-content:space-between; margin-bottom: 6px; }
+  .plan-name { font-family:'Reem Kufi',sans-serif; font-size:1.15rem; font-weight:700; }
+  .plan-price { font-size:1.05rem; font-weight:800; }
+  .plan-price span { font-size:.72rem; font-weight:400; color:#8a8672; }
+  .plan-sub { font-size:.8rem; color:#7a7868; margin-bottom: 18px; }
+
+  .plan-features { list-style:none; display:flex; flex-direction:column; gap:11px; }
+  .plan-features li { display:flex; align-items:flex-start; gap:9px; font-size:.87rem; line-height:1.5; }
+  .plan-features li .ico { flex-shrink:0; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.68rem; margin-top:1px; }
+  .plan-features li.yes .ico { background:#E8F3EA; color:#4C8C5E; }
+  .plan-features li.no { color:#B3AFA4; }
+  .plan-features li.no .ico { background:#F1EFE9; color:#B3AFA4; }
+
+  .plan-basic { }
+  .plan-basic .ico.yes-bg { background:#E8F3EA; }
+
+  .plan-cta {
+    display:block; text-align:center; margin-top: 22px; padding: 12px 0;
+    border-radius: 30px; font-weight:700; font-size:.87rem; text-decoration:none;
+    background: #211F1B; color:#fff;
+  }
+  .plan.featured .plan-cta { background:#C98A7D; }
+
+  .compare-note {
+    max-width: 480px; margin: 30px auto 60px; padding: 20px 24px;
+    background:#211F1B; color:#EFEAE0; border-radius:18px;
+    font-size:.83rem; line-height:1.9; text-align:center;
+  }
+  .compare-note strong { color:#D4AF7A; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="eyebrow">OUR PACKAGES</div>
+  <h1>اختر الباقة المناسبة لمناسبتك</h1>
+  <p>ثلاث باقات واضحة — كل وحدة تناسب حجم واحتياج مختلف</p>
+</div>
+
+<div class="plans">
+
+  <!-- أساسية -->
+  <div class="plan">
+    <div class="plan-head">
+      <div class="plan-name">🌱 أساسية</div>
+      <div class="plan-price">10 ر.ع <span>/ للمناسبة</span></div>
+    </div>
+    <div class="plan-sub">للمناسبات البسيطة وأصحاب الميزانية المحدودة</div>
+    <ul class="plan-features">
+      <li class="yes"><span class="ico">✓</span> صفحة مناسبة كاملة</li>
+      <li class="yes"><span class="ico">✓</span> ثيمين بسيطين (توهج / سكون)</li>
+      <li class="yes"><span class="ico">✓</span> QR Code جاهز للطباعة</li>
+      <li class="yes"><span class="ico">✓</span> خريطة الموقع</li>
+      <li class="no"><span class="ico">✕</span> عد تنازلي حي</li>
+      <li class="no"><span class="ico">✕</span> تأكيد حضور (RSVP)</li>
+      <li class="no"><span class="ico">✕</span> جدول برنامج الحفل</li>
+      <li class="yes"><span class="ico">✓</span> تعديل واحد مجاني</li>
+      <li class="yes"><span class="ico">✓</span> تسليم خلال 48 ساعة</li>
+    </ul>
+    <a href="#" class="plan-cta" onclick="return false;">اختار الأساسية</a>
+  </div>
+
+  <!-- مميزة -->
+  <div class="plan featured">
+    <div class="ribbon">الأكثر طلباً</div>
+    <div class="plan-head">
+      <div class="plan-name">🌟 مميزة</div>
+      <div class="plan-price">20 ر.ع <span>/ للمناسبة</span></div>
+    </div>
+    <div class="plan-sub">الأنسب لمعظم الأعراس والمناسبات العائلية</div>
+    <ul class="plan-features">
+      <li class="yes"><span class="ico">✓</span> كل مميزات الباقة الأساسية</li>
+      <li class="yes"><span class="ico">✓</span> جميع الثيمات السبعة</li>
+      <li class="yes"><span class="ico">✓</span> عد تنازلي حي للمناسبة</li>
+      <li class="no"><span class="ico">✕</span> تأكيد حضور (RSVP)</li>
+      <li class="no"><span class="ico">✕</span> جدول برنامج الحفل</li>
+      <li class="no"><span class="ico">✕</span> لوحة متابعة المدعوين</li>
+      <li class="yes"><span class="ico">✓</span> حتى 3 تعديلات مجانية</li>
+      <li class="yes"><span class="ico">✓</span> تسليم خلال 24 ساعة</li>
+    </ul>
+    <a href="#" class="plan-cta" onclick="return false;">اختار المميزة</a>
+  </div>
+
+  <!-- فاخرة -->
+  <div class="plan">
+    <div class="plan-head">
+      <div class="plan-name">👑 فاخرة</div>
+      <div class="plan-price">30 ر.ع <span>/ للمناسبة</span></div>
+    </div>
+    <div class="plan-sub">لمن يريد تجربة كاملة واحترافية بدون تفاصيل ناقصة</div>
+    <ul class="plan-features">
+      <li class="yes"><span class="ico">✓</span> كل مميزات الباقة المميزة</li>
+      <li class="yes"><span class="ico">✓</span> جدول كامل لبرنامج الحفل</li>
+      <li class="yes"><span class="ico">✓</span> زر تأكيد الحضور (ضغطة واحدة + اسم اختياري)</li>
+      <li class="yes"><span class="ico">✓</span> لوحة خاصة لمتابعة عدد المؤكدين والأسماء</li>
+      <li class="yes"><span class="ico">✓</span> خيار "ثيم مخصص" حسب تصميمك (50 ر.ع مستقلة)</li>
+      <li class="yes"><span class="ico">✓</span> تعديلات غير محدودة (بحدود معقولة)</li>
+      <li class="yes"><span class="ico">✓</span> تسليم مستعجل خلال 12 ساعة</li>
+      <li class="yes"><span class="ico">✓</span> أولوية بالرد والدعم</li>
+    </ul>
+    <a href="#" class="plan-cta" onclick="return false;">اختار الفاخرة</a>
+  </div>
+
+</div>
+
+<div class="compare-note">
+  💡 <strong>غير متأكد أي باقة تناسبك؟</strong><br>
+  لو مناسبتك بسيطة وما تحتاج تفاعل من الضيوف → الأساسية تكفي.<br>
+  لو عرس أو مناسبة تبي تحس فيها بالحماس (عد تنازلي فقط) → المميزة مناسبة.<br>
+  لو تبي تعرف بالضبط مين حاضر وتتابع الأعداد بدقة → الفاخرة هي الوحيدة اللي فيها هالميزة.
+</div>
+
+</body>
+</html>

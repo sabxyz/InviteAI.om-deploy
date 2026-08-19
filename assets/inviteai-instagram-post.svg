@@ -1,0 +1,51 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F7F5EF"/>
+      <stop offset="100%" stop-color="#EFEADB"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1080" fill="url(#bgGrad)"/>
+
+  <rect x="60" y="60" width="960" height="960" fill="none" stroke="#C6A15B" stroke-width="1.5" opacity="0.55"/>
+
+  <circle cx="540" cy="330" r="150" fill="#FFFFFF" opacity="0.9"/>
+  <g transform="translate(540,330)">
+    <rect x="-70" y="-70" width="30" height="30" fill="#3F4A2E"/>
+    <rect x="-70" y="-30" width="30" height="30" fill="#3F4A2E"/>
+    <rect x="-30" y="-70" width="30" height="30" fill="#3F4A2E"/>
+    <rect x="40" y="-70" width="30" height="30" fill="#3F4A2E"/>
+    <rect x="40" y="-30" width="30" height="30" fill="#3F4A2E"/>
+    <rect x="80" y="-70" width="30" height="30" fill="#3F4A2E"/>
+    <rect x="-70" y="40" width="30" height="30" fill="#3F4A2E"/>
+    <rect x="-70" y="80" width="30" height="30" fill="#3F4A2E"/>
+    <rect x="-30" y="80" width="30" height="30" fill="#3F4A2E"/>
+    <rect x="10" y="10" width="30" height="30" fill="#C6A15B"/>
+    <rect x="50" y="50" width="30" height="30" fill="#3F4A2E"/>
+    <rect x="50" y="90" width="30" height="30" fill="#3F4A2E"/>
+    <rect x="90" y="10" width="20" height="20" fill="#3F4A2E"/>
+    <rect x="90" y="90" width="20" height="20" fill="#C6A15B"/>
+  </g>
+
+  <text x="540" y="560" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="700" fill="#2B2B22">InviteAI</text>
+  <text x="540" y="610" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#6E7B52" letter-spacing="6">.OM</text>
+
+  <line x1="440" y1="650" x2="640" y2="650" stroke="#C6A15B" stroke-width="1.5"/>
+
+  <text x="540" y="710" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="26" fill="#5C5F4D">دعوة رقمية أنيقة لكل مناسبة</text>
+  <text x="540" y="750" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="22" fill="#8A8A78">رابط + QR — بضغطة واحدة</text>
+
+  <g transform="translate(540,860)">
+    <rect x="-190" y="-32" width="130" height="64" rx="32" fill="#FFFFFF" stroke="#C6A15B" stroke-width="1"/>
+    <text x="-125" y="8" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="20" fill="#3F4A2E">أعراس</text>
+
+    <rect x="-60" y="-32" width="130" height="64" rx="32" fill="#FFFFFF" stroke="#C6A15B" stroke-width="1"/>
+    <text x="5" y="8" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="20" fill="#3F4A2E">تخرج</text>
+
+    <rect x="70" y="-32" width="130" height="64" rx="32" fill="#FFFFFF" stroke="#C6A15B" stroke-width="1"/>
+    <text x="135" y="8" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="20" fill="#3F4A2E">مناسبات</text>
+  </g>
+
+  <text x="540" y="980" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="18" fill="#8A8A78" letter-spacing="2">@InviteAI.om — عُمان</text>
+</svg>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تأكيد الحضور بضغطة واحدة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Cairo:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1E241F; --gold:#B8934A; --olive-soft:#A7B39E; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Cairo',sans-serif; background:#FAFAF6; color:var(--ink); }
+  @media (prefers-reduced-motion: reduce) { *{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
+
+  .note { text-align:center; font-size:.78rem; color:#726f61; padding:24px 24px 0; max-width:420px; margin:0 auto; line-height:1.8; }
+
+  .rsvp-section {
+    background: var(--ink); color: #fff; padding: 70px 24px; text-align: center;
+    max-width: 480px; margin: 30px auto; border-radius: 24px;
+  }
+  .label { font-size: .72rem; letter-spacing: .2em; color: var(--olive-soft); font-weight: 700; margin-bottom: 12px; }
+  h2 { font-family: 'Reem Kufi', sans-serif; font-size: 1.5rem; margin-bottom: 12px; }
+  p.sub { font-weight: 300; color: #D3DACB; max-width: 300px; margin: 0 auto; line-height: 1.8; font-size:.87rem; }
+
+  .rsvp-btn {
+    display: inline-flex; align-items:center; gap:8px;
+    margin-top: 26px; padding: 16px 46px;
+    background: var(--gold); color: var(--ink); border: none;
+    font-weight: 700; font-size: .92rem; border-radius: 30px;
+    cursor: pointer; transition: transform .25s, box-shadow .25s;
+    font-family: 'Cairo', sans-serif;
+  }
+  .rsvp-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(184,147,74,0.3); }
+  .rsvp-btn:active { transform: scale(0.97); }
+
+  .confirmed-state {
+    display: none; flex-direction: column; align-items: center; margin-top: 26px;
+  }
+  .checkmark-circle {
+    width: 60px; height: 60px; border-radius: 50%; background: rgba(184,147,74,0.15);
+    display: flex; align-items: center; justify-content: center;
+    animation: popIn .5s cubic-bezier(.34,1.56,.64,1);
+  }
+  .checkmark-circle svg { width: 30px; height: 30px; }
+  .checkmark-circle path {
+    stroke: var(--gold); stroke-width: 3; fill: none;
+    stroke-dasharray: 40; stroke-dashoffset: 40;
+    animation: drawCheck .5s ease .2s forwards;
+  }
+  @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+  @keyframes popIn { from { transform: scale(0.5); opacity:0; } to { transform: scale(1); opacity:1; } }
+  .confirmed-text { margin-top: 14px; font-weight: 700; font-size: .95rem; color: #fff; }
+  .confirmed-sub { margin-top: 4px; font-size: .8rem; color: #A7B39E; }
+
+  /* حقل الاسم الاختياري - يظهر بعد التأكيد */
+  .optional-name {
+    margin-top: 22px; display: flex; flex-direction: column; align-items: center;
+    opacity: 0; animation: fadeIn .5s ease .6s forwards;
+    width: 100%;
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+  .optional-name .hint { font-size: .74rem; color: #A7B39E; margin-bottom: 10px; }
+  .optional-name .input-row { display: flex; gap: 8px; width: 100%; max-width: 280px; }
+  .optional-name input {
+    flex: 1; padding: 10px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.08); color: #fff; font-family: 'Cairo', sans-serif; font-size: .85rem;
+    outline: none;
+  }
+  .optional-name input::placeholder { color: #8a9285; }
+  .optional-name input:focus { border-color: var(--gold); }
+  .optional-name button {
+    padding: 10px 20px; border-radius: 20px; border: none;
+    background: var(--gold); color: var(--ink); font-weight: 700; font-size: .82rem;
+    cursor: pointer; font-family: 'Cairo', sans-serif;
+  }
+  .name-sent {
+    display: none; margin-top: 14px; font-size: .8rem; color: #A7B39E;
+  }
+
+  .admin-only-note {
+    max-width: 420px; margin: 30px auto 0; padding: 14px 20px;
+    background: #F1EFE9; border-radius: 12px; text-align:center;
+    font-size:.76rem; color:#7a7868; line-height:1.7;
+  }
+  .admin-only-note strong { color: #211F1B; }
+</style>
+</head>
+<body>
+
+<p class="note">هذا شكل زر تأكيد الحضور بالباقة الفاخرة — ضغطة وحدة بس، بدون تعبئة أي بيانات. جرب اضغط الزر تحت 👇</p>
+
+<div class="rsvp-section">
+  <div class="label">تأكيد الحضور</div>
+  <h2>هل ستشرّفوننا بالحضور؟</h2>
+  <p class="sub">اضغط الزر لتأكيد حضورك — بدون تعبئة أي معلومات</p>
+
+  <button class="rsvp-btn" id="rsvp-btn">
+    <span>سأحضر بإذن الله</span> 🎉
+  </button>
+
+  <div class="confirmed-state" id="confirmed-state">
+    <div class="checkmark-circle">
+      <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>
+    </div>
+    <div class="confirmed-text">تم تأكيد حضورك ✅</div>
+    <div class="confirmed-sub">نتشرف بكم — نراكم قريباً 🌿</div>
+
+    <div class="optional-name" id="optional-name">
+      <div class="hint">حاب تكتب اسمك؟ (اختياري)</div>
+      <div class="input-row">
+        <input type="text" id="guest-name" placeholder="اسمك هنا...">
+        <button id="send-name-btn">إرسال</button>
+      </div>
+      <div class="name-sent" id="name-sent">شكراً 🌿 تم إضافة اسمك</div>
+    </div>
+  </div>
+</div>
+
+<div class="admin-only-note">
+  🔒 <strong>ملاحظة:</strong> عدد المؤكدين لا يظهر للزائر إطلاقاً — يظهر فقط لصاحب المناسبة عبر رابط خاص منفصل (لوحة متابعة المدعوين).
+</div>
+
+<script>
+  const btn = document.getElementById('rsvp-btn');
+  const confirmedState = document.getElementById('confirmed-state');
+
+  btn.addEventListener('click', () => {
+    btn.style.display = 'none';
+    confirmedState.style.display = 'flex';
+    // بالمشروع الحقيقي: هنا يصير استدعاء API بسيط يزيد رقم التأكيدات
+    // بجدول Google Sheet الخاص بصاحب المناسبة، بدون أي بيانات شخصية عن الضيف
+    // الرقم نفسه لا يُعرض على هذي الصفحة أبداً — يظهر فقط بلوحة صاحب المناسبة
+  });
+
+  const sendNameBtn = document.getElementById('send-name-btn');
+  const nameInput = document.getElementById('guest-name');
+  const optionalNameBlock = document.getElementById('optional-name');
+  const nameSentMsg = document.getElementById('name-sent');
+
+  sendNameBtn.addEventListener('click', () => {
+    // الإرسال يشتغل سواء كتب اسمه أو تركه فاضي وضغط إرسال — ما فيه إجبار
+    document.querySelector('.input-row').style.display = 'none';
+    document.querySelector('.optional-name .hint').style.display = 'none';
+    nameSentMsg.style.display = 'block';
+    // بالمشروع الحقيقي: لو الحقل فيه نص، ينضاف كعمود منفصل بجانب رقم التأكيد
+    // بلوحة صاحب المناسبة فقط — ما يظهر لباقي الزوار مطلقاً
+  });
+</script>
+
+</body>
+</html>

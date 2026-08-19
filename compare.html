@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مقارنة حية — صفحة الزبون حسب الباقة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Cairo:wght@200;300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#FAFAF6; --ink:#1E241F; --olive:#4C5D42; --olive-soft:#7C8E70; --gold:#B8934A; --line:rgba(30,36,31,0.1);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family:'Cairo',sans-serif; overflow-x:hidden; }
+  @media (prefers-reduced-motion: reduce) { *{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
+
+  .tier-bar {
+    position: sticky; top:0; z-index: 999;
+    background:#211F1B; padding:14px 16px;
+    display:flex; gap:8px; justify-content:center; flex-wrap:wrap; align-items:center;
+  }
+  .tier-bar button {
+    background:transparent; border:1px solid #8a8672; color:#EDE9DF;
+    padding:9px 16px; font-family:'Cairo',sans-serif; font-size:.8rem; font-weight:600;
+    cursor:pointer; transition:.2s; border-radius: 20px;
+  }
+  .tier-bar button.active { background:#C98A7D; border-color:#C98A7D; color:#fff; }
+  .note { text-align:center; font-size:.76rem; color:#666; padding:12px 24px 0; max-width:460px; margin:0 auto; line-height:1.7; }
+
+  .hero {
+    min-height: 60svh; position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 40px 24px;
+  }
+  .eyebrow { font-size: .74rem; letter-spacing: .25em; color: var(--olive-soft); font-weight: 600; }
+  .names { font-family: 'Reem Kufi', sans-serif; font-size: clamp(2.2rem, 9vw, 3.4rem); font-weight: 700; color: var(--ink); margin: 14px 0; }
+  .tagline { font-weight: 300; font-size: .95rem; max-width: 340px; line-height: 1.9; color: #556052; margin:0 auto; }
+  .date-badge { margin-top: 20px; padding: 9px 24px; border: 1px solid var(--line); border-radius: 30px; font-size: .82rem; font-weight: 600; display:inline-block; }
+
+  section { padding: 46px 24px; max-width: 460px; margin: 0 auto; text-align: center; }
+  .label { font-size: .72rem; letter-spacing: .18em; color: var(--olive-soft); font-weight: 700; margin-bottom: 12px; text-transform: uppercase; }
+  h2 { font-family: 'Reem Kufi', sans-serif; font-size: 1.4rem; color: var(--ink); margin-bottom: 18px; font-weight: 500; }
+
+  /* Countdown - featured+ only */
+  .countdown-section { display: none; }
+  .countdown { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .count-box .num { font-size: 1.7rem; font-weight: 800; color: var(--ink); font-family: 'Reem Kufi', sans-serif; }
+  .count-box .unit { font-size: .64rem; color: var(--olive-soft); }
+
+  /* Details - always visible */
+  .details-grid { display: flex; gap: 10px; }
+  .detail-card { flex: 1; background: #fff; border-radius: 16px; padding: 16px 10px; box-shadow: 0 6px 20px rgba(61,87,69,0.06); }
+  .detail-card .icon { font-size: 1.2rem; margin-bottom: 6px; }
+  .detail-card .k { font-size: .68rem; color: var(--olive-soft); font-weight: 700; margin-bottom:3px; }
+  .detail-card .v { font-size: .82rem; }
+
+  /* Timeline - premium only */
+  .timeline-section { display: none; }
+  .timeline { text-align: right; margin-top: 6px; position: relative; padding-right: 26px; }
+  .timeline::before { content:""; position: absolute; right: 5px; top: 6px; bottom: 6px; width: 1.5px; background: var(--line); }
+  .t-item { position: relative; padding-bottom: 22px; }
+  .t-item::before { content:""; position: absolute; right: -26px; top: 4px; width: 9px; height: 9px; border-radius: 50%; background: var(--gold); border: 2px solid var(--bg); box-shadow: 0 0 0 1.5px var(--gold); }
+  .t-item .time { font-size: .74rem; color: var(--olive-soft); font-weight: 600; }
+  .t-item .desc { font-size: .88rem; margin-top: 2px; }
+
+  /* RSVP - featured+ only */
+  .rsvp-section { display: none; background: var(--ink); color: #fff; padding: 60px 24px; text-align: center; }
+  .rsvp-section .label { color: #A7B39E; }
+  .rsvp-section h2 { color: #fff; }
+  .rsvp-section p { font-weight: 300; color: #D3DACB; max-width: 300px; margin: 0 auto; line-height: 1.8; font-size:.85rem; }
+  .rsvp-btn { display: inline-block; margin-top: 18px; padding: 13px 40px; background: var(--gold); color: var(--ink); text-decoration: none; font-weight: 700; font-size: .85rem; border-radius: 30px; }
+
+  .qr-note { padding: 46px 24px 56px; text-align: center; }
+  .qr-box { width: 110px; height: 110px; margin: 0 auto 14px; background: #fff; border-radius: 20px; box-shadow: 0 8px 24px rgba(61,87,69,0.06); display: flex; align-items: center; justify-content: center; font-size: .66rem; color: var(--olive-soft); }
+  footer { text-align: center; padding: 24px; font-size: .7rem; color: #9AA69C; }
+
+  .locked-badge {
+    display: inline-flex; align-items:center; gap:6px;
+    background:#F1EFE9; color:#A79E8C; font-size:.76rem; font-weight:700;
+    padding: 10px 18px; border-radius: 12px; margin-top: 8px;
+  }
+  .unlocked-note {
+    font-size:.72rem; color: var(--olive-soft); margin-top:8px; font-weight:600;
+  }
+</style>
+</head>
+<body>
+
+<div class="tier-bar">
+  <button data-tier="basic">🌱 أساسية</button>
+  <button data-tier="featured" class="active">🌟 مميزة</button>
+  <button data-tier="premium">👑 فاخرة</button>
+</div>
+<p class="note">اضغط على أي باقة فوق 👆 لتشاهد <strong>نفس صفحة الزبون بالضبط</strong> — بس الأقسام تظهر أو تختفي حسب الباقة المدفوعة.</p>
+
+<section class="hero">
+  <div class="eyebrow">SAVE THE DATE</div>
+  <div class="names">سارة &amp; أحمد</div>
+  <p class="tagline">يسعدنا ويشرفنا حضوركم لمشاركتنا هذه اللحظة الاستثنائية</p>
+  <div class="date-badge">١٥ نوفمبر ٢٠٢٦ — قاعة الأنوار، مسقط</div>
+</section>
+
+<!-- Countdown: featured + premium only -->
+<section class="countdown-section" id="countdown-section">
+  <div class="label">العد التنازلي</div>
+  <h2>باقي على الفرحة</h2>
+  <div class="countdown" id="countdown">
+    <div class="count-box"><div class="num" id="days">--</div><div class="unit">يوم</div></div>
+    <div class="count-box"><div class="num" id="hours">--</div><div class="unit">ساعة</div></div>
+    <div class="count-box"><div class="num" id="mins">--</div><div class="unit">دقيقة</div></div>
+    <div class="count-box"><div class="num" id="secs">--</div><div class="unit">ثانية</div></div>
+  </div>
+</section>
+<div id="countdown-locked" style="text-align:center; padding: 30px 24px;">
+  <div class="locked-badge">🔒 غير متاح بالباقة الأساسية</div>
+</div>
+
+<!-- Details: always -->
+<section>
+  <div class="label">التفاصيل</div>
+  <h2>موعد ومكان الحفل</h2>
+  <div class="details-grid">
+    <div class="detail-card"><div class="icon">📅</div><div class="k">التاريخ</div><div class="v">١٥ نوفمبر</div></div>
+    <div class="detail-card"><div class="icon">🕗</div><div class="k">الوقت</div><div class="v">٨:٠٠ م</div></div>
+    <div class="detail-card"><div class="icon">📍</div><div class="k">القاعة</div><div class="v">الأنوار</div></div>
+  </div>
+</section>
+
+<!-- Timeline: premium only -->
+<section class="timeline-section" id="timeline-section">
+  <div class="label">برنامج اليوم</div>
+  <h2>جدول الحفل</h2>
+  <div class="timeline">
+    <div class="t-item"><div class="time">٧:٣٠ م</div><div class="desc">استقبال الضيوف</div></div>
+    <div class="t-item"><div class="time">٨:٠٠ م</div><div class="desc">دخول العروسين</div></div>
+    <div class="t-item"><div class="time">٩:٠٠ م</div><div class="desc">حفل العشاء</div></div>
+    <div class="t-item"><div class="time">١٠:٣٠ م</div><div class="desc">قطع الكيكة</div></div>
+  </div>
+</section>
+<div id="timeline-locked" style="text-align:center; padding: 10px 24px 30px;">
+  <div class="locked-badge">🔒 جدول برنامج الحفل — بالباقة الفاخرة فقط</div>
+</div>
+
+<!-- RSVP: featured + premium only -->
+<div class="rsvp-section" id="rsvp-section">
+  <div class="label">تأكيد الحضور</div>
+  <h2>هل ستشرّفوننا بالحضور؟</h2>
+  <p>نرجو تأكيد حضوركم قبل ١ نوفمبر</p>
+  <a class="rsvp-btn" href="#" onclick="return false;">تأكيد الحضور</a>
+</div>
+<div id="rsvp-locked" style="text-align:center; padding: 10px 24px 30px;">
+  <div class="locked-badge">🔒 زر تأكيد الحضور + لوحة متابعة المدعوين — بالباقة الفاخرة فقط</div>
+</div>
+
+<!-- QR: always -->
+<section class="qr-note">
+  <div class="label">للدعوات المطبوعة</div>
+  <div class="qr-box">QR Code هنا</div>
+  <p style="font-size:.8rem; color:#5C6B60; font-weight:300;">امسح الكود للوصول مباشرة لهذي الصفحة</p>
+</section>
+
+<footer id="tier-footer">تشاهد الآن: الباقة المميزة 🌟</footer>
+
+<script>
+  const weddingDate = new Date("2026-11-15T20:00:00+04:00").getTime();
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const diff = weddingDate - now;
+    if (diff <= 0) return;
+    document.getElementById("days").textContent = Math.floor(diff / (1000*60*60*24));
+    document.getElementById("hours").textContent = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    document.getElementById("mins").textContent = Math.floor((diff % (1000*60*60)) / (1000*60));
+    document.getElementById("secs").textContent = Math.floor((diff % (1000*60)) / 1000);
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  const footerLabels = {
+    basic: "تشاهد الآن: الباقة الأساسية 🌱",
+    featured: "تشاهد الآن: الباقة المميزة 🌟",
+    premium: "تشاهد الآن: الباقة الفاخرة 👑"
+  };
+
+  function applyTier(tier) {
+    const countdownSection = document.getElementById('countdown-section');
+    const countdownLocked = document.getElementById('countdown-locked');
+    const rsvpSection = document.getElementById('rsvp-section');
+    const rsvpLocked = document.getElementById('rsvp-locked');
+    const timelineSection = document.getElementById('timeline-section');
+    const timelineLocked = document.getElementById('timeline-locked');
+
+    const hasCountdown = tier === 'featured' || tier === 'premium';
+    const hasRsvp = tier === 'premium';
+    const hasTimeline = tier === 'premium';
+
+    countdownSection.style.display = hasCountdown ? 'block' : 'none';
+    countdownLocked.style.display = hasCountdown ? 'none' : 'block';
+
+    rsvpSection.style.display = hasRsvp ? 'block' : 'none';
+    rsvpLocked.style.display = hasRsvp ? 'none' : 'block';
+
+    timelineSection.style.display = hasTimeline ? 'block' : 'none';
+    timelineLocked.style.display = hasTimeline ? 'none' : 'block';
+
+    document.getElementById('tier-footer').textContent = footerLabels[tier];
+
+    document.querySelectorAll('.tier-bar button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tier === tier);
+    });
+  }
+
+  document.querySelectorAll('.tier-bar button').forEach(btn => {
+    btn.addEventListener('click', () => applyTier(btn.dataset.tier));
+  });
+
+  applyTier('featured');
+</script>
+
+</body>
+</html>

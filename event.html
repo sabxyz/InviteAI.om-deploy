@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title id="page-title">جاري التحميل... | InviteAI.om</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Cairo:wght@200;300;400;600;800&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  /* ============================================================
+     InviteAI.om — event.html (القالب الديناميكي الموحّد)
+     يقرأ بيانات الزبون من Google Sheet عبر Apps Script Web App
+     حسب معرّف الرابط ?id=xxxx ثم يبني الصفحة بالكامل تلقائياً.
+     ============================================================ */
+
+  :root {
+    /* قيم افتراضية محايدة — تُستبدل بمتغيرات كل ثيم عبر body[data-theme] */
+    --accent: #8C9B6E; --accent-deep: #3F4A2E; --ink: #2B2B22;
+    --bg: #F5F3EC; --bg-deep: #EDEADF; --title-font: 'Reem Kufi', sans-serif;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--ink); font-family:'Cairo',sans-serif;
+    overflow-x:hidden; position:relative; min-height:100svh;
+  }
+  @media (prefers-reduced-motion: reduce) { *{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
+
+  /* ---------- حالة التحميل والخطأ ---------- */
+  #loading, #error-state {
+    min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:40px 24px; gap:14px;
+  }
+  #loading .spinner {
+    width:34px; height:34px; border-radius:50%; border:3px solid #e4e1d6; border-top-color:#8C9B6E;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading p, #error-state p { font-size:.9rem; color:#6b6a5c; max-width:300px; line-height:1.8; }
+  #error-state .icon { font-size:2.2rem; }
+  #error-state h1 { font-family:'Reem Kufi',sans-serif; font-size:1.2rem; color:#2B2B22; }
+  #error-state a { color:#8C9B6E; font-weight:700; text-decoration:none; }
+
+  /* ---------- العلامة المائية (نسخة معاينة) ---------- */
+  #watermark-layer {
+    position: fixed; inset:0; z-index:500; pointer-events:none; display:none;
+    flex-wrap:wrap; align-content:space-around; justify-content:space-around;
+    transform: rotate(-26deg) scale(1.4);
+  }
+  #watermark-layer span { font-size:1.05rem; font-weight:700; color: rgba(43,43,34,0.07); white-space:nowrap; padding:26px 34px; }
+
+  /* ---------- شريط تنبيه الدفع (نسخة معاينة فقط) ---------- */
+  .price-banner {
+    position: fixed; bottom:0; right:0; left:0; z-index:998; display:none;
+    background: var(--accent-deep); color:#fff; text-align:center; padding:14px 20px; font-size:.83rem;
+  }
+  .price-banner a.pay-link {
+    display:inline-block; background: var(--accent); color:#fff; border:none; padding:8px 20px; margin-inline-start:10px;
+    font-weight:700; cursor:pointer; font-family:'Cairo',sans-serif; border-radius:16px; text-decoration:none; margin-top:6px;
+  }
+
+  /* ---------- الـ Hero ---------- */
+  .hero {
+    min-height: 70svh; position:relative; overflow:hidden;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:50px 24px;
+    background: radial-gradient(ellipse at top, var(--bg-deep) 0%, var(--bg) 70%);
+  }
+  .eyebrow { font-size:.78rem; letter-spacing:.25em; color: var(--accent); font-weight:700; position:relative; z-index:2; }
+  .headline { font-family: var(--title-font); font-weight:700; font-size:clamp(2.1rem,8vw,3.2rem); color: var(--accent-deep); margin:16px 0 6px; position:relative; z-index:2; }
+  .guest-name { font-size:1.3rem; font-weight:800; color: var(--ink); position:relative; z-index:2; }
+  .tagline { font-weight:300; font-size:1rem; max-width:340px; line-height:1.9; color:#5c5f4d; margin:16px auto 0; position:relative; z-index:2; }
+  .date-badge { margin-top:22px; padding:9px 24px; background:#fff; border-radius:30px; font-size:.85rem; font-weight:600; display:inline-block; position:relative; z-index:2; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+
+  /* ---------- الأيقونة التوقيعية لكل ثيم ---------- */
+  .signature { position:relative; z-index:2; margin-bottom:6px; }
+  /* 💗 نبض */
+  body[data-theme="pulse"] .heart-wrap { position:relative; width:64px; height:56px; margin:0 auto; }
+  body[data-theme="pulse"] .heart { position:absolute; inset:0; font-size:2.1rem; display:flex; align-items:center; justify-content:center; animation: heartbeat 1.8s ease-in-out infinite; }
+  body[data-theme="pulse"] .ring { position:absolute; inset:0; border:1.5px solid var(--accent); border-radius:50%; animation: ringPulse 1.8s ease-out infinite; }
+  @keyframes heartbeat { 0%,100%{transform:scale(1);} 14%{transform:scale(1.18);} 28%{transform:scale(0.96);} 42%{transform:scale(1.1);} 70%{transform:scale(1);} }
+  @keyframes ringPulse { 0%{transform:scale(0.6); opacity:.6;} 100%{transform:scale(1.6); opacity:0;} }
+  /* ✨ توهج */
+  body[data-theme="glow"] .icon-ring { width:52px; height:52px; margin:0 auto; border-radius:50%; border:1px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size:1.15rem; color:var(--accent); animation: gentleSpin 12s linear infinite; }
+  @keyframes gentleSpin { from{transform:rotate(0);} to{transform:rotate(360deg);} }
+  /* 🌸 تفتّح */
+  body[data-theme="bloom"] .flower-wrap { position:relative; width:56px; height:56px; margin:0 auto; }
+  body[data-theme="bloom"] .petal { position:absolute; top:50%; left:50%; width:18px; height:18px; background:var(--accent); border-radius:60% 0 60% 0; transform-origin:0% 100%; animation: bloomOpen 3.2s ease-in-out infinite; }
+  body[data-theme="bloom"] .petal:nth-child(1){ transform:translate(-50%,-100%) rotate(0deg); }
+  body[data-theme="bloom"] .petal:nth-child(2){ transform:translate(-50%,-100%) rotate(72deg); animation-delay:.15s; }
+  body[data-theme="bloom"] .petal:nth-child(3){ transform:translate(-50%,-100%) rotate(144deg); animation-delay:.3s; }
+  body[data-theme="bloom"] .petal:nth-child(4){ transform:translate(-50%,-100%) rotate(216deg); animation-delay:.45s; }
+  body[data-theme="bloom"] .petal:nth-child(5){ transform:translate(-50%,-100%) rotate(288deg); animation-delay:.6s; }
+  @keyframes bloomOpen { 0%,100%{opacity:.55;} 50%{opacity:1;} }
+  body[data-theme="bloom"] .dot { position:absolute; top:50%; left:50%; width:10px; height:10px; background:#E8C36B; border-radius:50%; transform:translate(-50%,-50%); z-index:2; }
+  /* 🌊 سكون */
+  body[data-theme="calm"] .ripple-wrap { position:relative; width:56px; height:56px; margin:0 auto; }
+  body[data-theme="calm"] .drop { position:absolute; top:50%; left:50%; width:8px; height:8px; background:var(--accent); border-radius:50%; transform:translate(-50%,-50%); z-index:2; }
+  body[data-theme="calm"] .rwave { position:absolute; top:50%; left:50%; width:8px; height:8px; border:1.5px solid var(--accent); border-radius:50%; transform:translate(-50%,-50%); animation: rippleOut 2.6s ease-out infinite; }
+  body[data-theme="calm"] .rwave:nth-child(2){ animation-delay:.9s; }
+  body[data-theme="calm"] .rwave:nth-child(3){ animation-delay:1.8s; }
+  @keyframes rippleOut { 0%{ width:8px; height:8px; opacity:.7; } 100%{ width:56px; height:56px; opacity:0; } }
+  /* ☀️ إشراق */
+  body[data-theme="radiance"] .sun-wrap { position:relative; width:60px; height:60px; margin:0 auto; display:flex; align-items:center; justify-content:center; }
+  body[data-theme="radiance"] .sun-core { width:24px; height:24px; border-radius:50%; background:var(--accent); animation: sunPulse 2.4s ease-in-out infinite; box-shadow:0 0 16px 4px rgba(224,164,88,0.35); }
+  @keyframes sunPulse { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.15); } }
+  body[data-theme="radiance"] .rays { position:absolute; inset:0; animation: raySpin 20s linear infinite; }
+  body[data-theme="radiance"] .rays::before, body[data-theme="radiance"] .rays::after { content:""; position:absolute; background:#F0C68A; border-radius:2px; }
+  body[data-theme="radiance"] .rays::before { top:0; left:50%; width:2px; height:12px; transform:translateX(-50%); }
+  body[data-theme="radiance"] .rays::after { bottom:0; left:50%; width:2px; height:12px; transform:translateX(-50%); }
+  @keyframes raySpin { from{transform:rotate(0);} to{transform:rotate(360deg);} }
+  /* 🌙 لألاء */
+  body[data-theme="twinkle"] .stars-wrap { position:relative; width:70px; height:44px; margin:0 auto; }
+  body[data-theme="twinkle"] .star { position:absolute; font-size:1rem; color:var(--accent); animation: twinkle 2.4s ease-in-out infinite; }
+  body[data-theme="twinkle"] .star:nth-child(1){ top:2px; left:6px; animation-delay:0s; }
+  body[data-theme="twinkle"] .star:nth-child(2){ top:14px; left:30px; font-size:1.4rem; animation-delay:.5s; }
+  body[data-theme="twinkle"] .star:nth-child(3){ top:0; left:52px; animation-delay:1s; }
+  body[data-theme="twinkle"] .star:nth-child(4){ top:22px; left:8px; font-size:.75rem; animation-delay:1.4s; }
+  @keyframes twinkle { 0%,100%{ opacity:.25; transform:scale(0.85); } 50%{ opacity:1; transform:scale(1.1); } }
+  /* 🍃 ورق */
+  .leaf-ambient { position:absolute; top:0; font-size:1.4rem; opacity:.75; animation: leafFallAmbient linear infinite; z-index:1; }
+  @keyframes leafFallAmbient {
+    0% { transform: translateY(-5%) rotate(0deg); opacity:0; }
+    10% { opacity:.75; } 90% { opacity:.75; }
+    100% { transform: translateY(105vh) rotate(220deg); opacity:0; }
+  }
+
+  /* ---------- الأقسام العامة ---------- */
+  section { padding:50px 24px; max-width:460px; margin:0 auto; text-align:center; }
+  .label { font-size:.74rem; letter-spacing:.18em; color: var(--accent); font-weight:700; margin-bottom:14px; text-transform:uppercase; }
+  h2 { font-family: var(--title-font); font-size:1.35rem; color: var(--accent-deep); margin-bottom:18px; font-weight:500; }
+
+  /* عد تنازلي */
+  .countdown { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+  .count-box .num { font-size:1.8rem; font-weight:800; color: var(--accent-deep); font-family: var(--title-font); }
+  .count-box .unit { font-size:.66rem; color:#8a8a78; margin-top:2px; }
+
+  /* التفاصيل */
+  .details-grid { display:flex; gap:10px; flex-wrap:wrap; }
+  .detail-card { flex:1; min-width:100px; background:#fff; border-radius:16px; padding:16px 10px; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+  .detail-card .icon { font-size:1.2rem; margin-bottom:6px; }
+  .detail-card .k { font-size:.68rem; color: var(--accent); font-weight:700; margin-bottom:3px; }
+  .detail-card .v { font-size:.82rem; }
+  .detail-card a { color: var(--ink); text-decoration:underline; }
+
+  /* برنامج الحفل (فاخرة) */
+  .schedule-list { display:flex; flex-direction:column; gap:10px; }
+  .schedule-row { display:flex; align-items:center; gap:14px; background:#fff; border-radius:14px; padding:12px 18px; box-shadow:0 6px 16px rgba(0,0,0,0.05); text-align:right; }
+  .schedule-row .time { font-weight:800; color: var(--accent-deep); font-size:.85rem; min-width:56px; }
+  .schedule-row .item { font-size:.85rem; color:#4a493e; }
+
+  /* RSVP (فاخرة) */
+  .rsvp-section { background: var(--ink); color: #fff; padding: 60px 24px; text-align: center; max-width: 460px; margin: 10px auto; border-radius: 24px; }
+  .rsvp-section .label { color: #C9CBB8; }
+  .rsvp-section h2 { color:#fff; }
+  .rsvp-section p.sub { font-weight: 300; color: #D3DACB; max-width: 300px; margin: 0 auto; line-height: 1.8; font-size:.87rem; }
+  .rsvp-btn {
+    display: inline-flex; align-items:center; gap:8px; margin-top: 26px; padding: 16px 46px;
+    background: var(--accent); color: #1E241F; border: none; font-weight: 700; font-size: .92rem; border-radius: 30px;
+    cursor: pointer; transition: transform .25s; font-family: 'Cairo', sans-serif;
+  }
+  .rsvp-btn:active { transform: scale(0.97); }
+  .confirmed-state { display: none; flex-direction: column; align-items: center; margin-top: 26px; }
+  .checkmark-circle { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; animation: popIn .5s cubic-bezier(.34,1.56,.64,1); }
+  .checkmark-circle svg { width: 30px; height: 30px; }
+  .checkmark-circle path { stroke: var(--accent); stroke-width: 3; fill: none; stroke-dasharray: 40; stroke-dashoffset: 40; animation: drawCheck .5s ease .2s forwards; }
+  @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+  @keyframes popIn { from { transform: scale(0.5); opacity:0; } to { transform: scale(1); opacity:1; } }
+  .confirmed-text { margin-top: 14px; font-weight: 700; font-size: .95rem; }
+  .confirmed-sub { margin-top: 4px; font-size: .8rem; color: #A7B39E; }
+  .optional-name { margin-top: 22px; display: flex; flex-direction: column; align-items: center; opacity: 0; animation: fadeIn .5s ease .6s forwards; width: 100%; }
+  @keyframes fadeIn { to { opacity: 1; } }
+  .optional-name .hint { font-size: .74rem; color: #A7B39E; margin-bottom: 10px; }
+  .optional-name .input-row { display: flex; gap: 8px; width: 100%; max-width: 280px; margin: 0 auto; }
+  .optional-name input { flex: 1; padding: 10px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); color: #fff; font-family: 'Cairo', sans-serif; font-size: .85rem; outline: none; }
+  .optional-name input::placeholder { color: #8a9285; }
+  .optional-name button { padding: 10px 20px; border-radius: 20px; border: none; background: var(--accent); color: #1E241F; font-weight: 700; font-size: .82rem; cursor: pointer; font-family: 'Cairo', sans-serif; }
+  .name-sent { display: none; margin-top: 14px; font-size: .8rem; color: #A7B39E; }
+
+  /* QR */
+  .qr-note { padding:50px 24px 30px; text-align:center; }
+  .qr-box { width:150px; height:150px; margin:0 auto 14px; background:#fff; border-radius:20px; box-shadow:0 8px 24px rgba(0,0,0,0.08); display:flex; align-items:center; justify-content:center; padding:10px; }
+  .qr-box img, .qr-box canvas { width:100%; height:100%; }
+
+  footer { text-align:center; padding:24px 24px 100px; font-size:.72rem; color:#9a9a86; }
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <p>جاري تحميل صفحة المناسبة...</p>
+</div>
+
+<div id="error-state" style="display:none">
+  <div class="icon">🔗</div>
+  <h1>الرابط غير صحيح أو غير متاح</h1>
+  <p>تأكد من نسخ الرابط كامل، أو تواصل معنا على انستغرام <a href="https://instagram.com/InviteAI.om" target="_blank">@InviteAI.om</a></p>
+</div>
+
+<div id="watermark-layer"></div>
+
+<div id="app" style="display:none">
+
+  <section class="hero" id="hero">
+    <div class="signature" id="signature"></div>
+    <div class="eyebrow" id="ev-eyebrow"></div>
+    <div class="headline" id="ev-headline"></div>
+    <div class="guest-name" id="ev-name"></div>
+    <p class="tagline" id="ev-tagline"></p>
+    <div class="date-badge" id="ev-date-badge"></div>
+  </section>
+
+  <section id="countdown-section">
+    <div class="label">العد التنازلي</div>
+    <h2>باقي على المناسبة</h2>
+    <div class="countdown" id="countdown">
+      <div class="count-box"><div class="num" id="days">--</div><div class="unit">يوم</div></div>
+      <div class="count-box"><div class="num" id="hours">--</div><div class="unit">ساعة</div></div>
+      <div class="count-box"><div class="num" id="mins">--</div><div class="unit">دقيقة</div></div>
+      <div class="count-box"><div class="num" id="secs">--</div><div class="unit">ثانية</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">التفاصيل</div>
+    <h2>موعد ومكان المناسبة</h2>
+    <div class="details-grid">
+      <div class="detail-card"><div class="icon">📅</div><div class="k">التاريخ</div><div class="v" id="ev-date-text">—</div></div>
+      <div class="detail-card"><div class="icon">✨</div><div class="k">المناسبة</div><div class="v" id="ev-type-text">—</div></div>
+      <div class="detail-card"><div class="icon">📍</div><div class="k">المكان</div><div class="v" id="ev-location-text">—</div></div>
+    </div>
+  </section>
+
+  <section id="schedule-section" style="display:none">
+    <div class="label">برنامج الحفل</div>
+    <h2>جدول المناسبة</h2>
+    <div class="schedule-list" id="schedule-list"></div>
+  </section>
+
+  <div id="rsvp-wrap" style="display:none">
+    <section class="rsvp-section">
+      <div class="label">تأكيد الحضور</div>
+      <h2>هل ستشرّفوننا بالحضور؟</h2>
+      <p class="sub">اضغط الزر لتأكيد حضورك — بدون تعبئة أي معلومات</p>
+      <button class="rsvp-btn" id="rsvp-btn"><span>سأحضر بإذن الله</span> 🎉</button>
+      <div class="confirmed-state" id="confirmed-state">
+        <div class="checkmark-circle"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></div>
+        <div class="confirmed-text">تم تأكيد حضورك ✅</div>
+        <div class="confirmed-sub">نتشرف بكم — نراكم قريباً 🌿</div>
+        <div class="optional-name" id="optional-name">
+          <div class="hint">حاب تكتب اسمك؟ (اختياري)</div>
+          <div class="input-row">
+            <input type="text" id="guest-name-input" placeholder="اسمك هنا...">
+            <button id="send-name-btn">إرسال</button>
+          </div>
+          <div class="name-sent" id="name-sent">شكراً 🌿 تم إضافة اسمك</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="qr-note">
+    <div class="label">للدعوات المطبوعة</div>
+    <div class="qr-box" id="qr-box"></div>
+    <p style="font-size:.85rem; color:#6b6a5c; font-weight:300;">امسح الكود من بطاقة الدعوة للوصول مباشرة لهذي الصفحة</p>
+  </section>
+
+  <footer id="ev-footer"></footer>
+
+</div>
+
+<div class="price-banner" id="price-banner">
+  💳 هذي نسخة معاينة — أكمل باقي المبلغ لإزالة العلامة المائية واستلام الرابط والـQR النهائي
+  <br>
+  <a class="pay-link" href="https://instagram.com/InviteAI.om" target="_blank">تواصل معنا على انستغرام</a>
+</div>
+
+<script>
+/* ============================================================
+   الإعدادات — عدّل السطر التالي بعد نشر Apps Script (راجع SETUP.md)
+   ============================================================ */
+const CONFIG = {
+  API_URL: "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"
+};
+
+/* قاموس أنواع المناسبات — أضف/عدّل حسب الحاجة */
+const EVENT_TYPES = {
+  wedding:     { eyebrow: "TOGETHER FOREVER",        headline: "زواج مبارك 💍",      defaultTag: "قلبان يبدآن رحلة واحدة — يسعدنا حضوركم لمشاركتنا هذا الفرح" },
+  engagement:  { eyebrow: "OUR ENGAGEMENT",          headline: "خطوبة مباركة 💐",     defaultTag: "بداية حكاية جميلة — يسعدنا حضوركم لمشاركتنا هذه اللحظة" },
+  graduation:  { eyebrow: "CLASS OF THE YEAR",        headline: "مبروك التخرج 🎓",     defaultTag: "فصل ينتهي وآخر جميل يبدأ — يسعدنا حضوركم للاحتفال بهذا الإنجاز" },
+  birthday:    { eyebrow: "LITTLE CELEBRATION",       headline: "عام جديد سعيد 🎂",    defaultTag: "فرحة تستحق الاحتفال — يسعدنا حضوركم لمشاركتنا هذه اللحظة" },
+  national:    { eyebrow: "CELEBRATION DAY",          headline: "احتفال 🇴🇲",          defaultTag: "يوم مميز يستحق أجمل احتفال" },
+  evening:     { eyebrow: "AN EVENING TO REMEMBER",   headline: "دعوة لسهرة خاصة 🌙",  defaultTag: "أمسية مميزة تستحق حضوركم" },
+  farewell:    { eyebrow: "A NEW CHAPTER",            headline: "وداعاً وشكراً 🍃",    defaultTag: "فصل ينتهي وآخر جميل يبدأ" },
+  other:       { eyebrow: "YOU'RE INVITED",           headline: "دعوة خاصة ✨",        defaultTag: "يسعدنا حضوركم لمشاركتنا هذه اللحظة" }
+};
+
+const THEME_VARS = {
+  pulse:    { accent:"#C98A7D", accentDeep:"#3A2C28", ink:"#2B2B22", bg:"#FDF3F1", bgDeep:"#FBE7E3", font:"'Aref Ruqaa', serif" },
+  glow:     { accent:"#B8934A", accentDeep:"#2B2820", ink:"#2B2820", bg:"#FBF9F3", bgDeep:"#F3EEDF", font:"'Reem Kufi', sans-serif" },
+  bloom:    { accent:"#6E9478", accentDeep:"#2D3B31", ink:"#2D3B31", bg:"#F2F8F4", bgDeep:"#E4F0E7", font:"'Reem Kufi', sans-serif" },
+  calm:     { accent:"#5F93A3", accentDeep:"#233A42", ink:"#233A42", bg:"#EFF5F8", bgDeep:"#DCEAEE", font:"'Reem Kufi', sans-serif" },
+  radiance: { accent:"#D99B4E", accentDeep:"#4A3418", ink:"#4A3418", bg:"#FDF4EA", bgDeep:"#F7E4C8", font:"'Reem Kufi', sans-serif" },
+  twinkle:  { accent:"#8A6FAE", accentDeep:"#332B44", ink:"#332B44", bg:"#F5F2FA", bgDeep:"#E5DEF0", font:"'Reem Kufi', sans-serif" },
+  leaves:   { accent:"#8C9B6E", accentDeep:"#3F4A2E", ink:"#2B2B22", bg:"#F5F3EC", bgDeep:"#EDEADF", font:"'Reem Kufi', sans-serif" }
+};
+
+const PACKAGE_LABELS = { basic:"أساسية", premium:"مميزة", luxury:"فاخرة", custom:"مخصصة" };
+
+const SIGNATURE_HTML = {
+  pulse:    `<div class="heart-wrap"><div class="ring"></div><div class="heart">💗</div></div>`,
+  glow:     `<div class="icon-ring">✦</div>`,
+  bloom:    `<div class="flower-wrap"><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="dot"></div></div>`,
+  calm:     `<div class="ripple-wrap"><div class="rwave"></div><div class="rwave"></div><div class="rwave"></div><div class="drop"></div></div>`,
+  radiance: `<div class="sun-wrap"><div class="rays"></div><div class="sun-core"></div></div>`,
+  twinkle:  `<div class="stars-wrap"><div class="star">✦</div><div class="star">✧</div><div class="star">✦</div><div class="star">✧</div></div>`,
+  leaves:   `<div class="leaf-wrap" style="position:relative;width:70px;height:56px;margin:0 auto;">🍃</div>`
+};
+
+function q(id) { return document.getElementById(id); }
+
+function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+function showError() {
+  q('loading').style.display = 'none';
+  q('error-state').style.display = 'flex';
+}
+
+function applyTheme(themeKey) {
+  const t = THEME_VARS[themeKey] || THEME_VARS.leaves;
+  document.body.setAttribute('data-theme', themeKey in THEME_VARS ? themeKey : 'leaves');
+  const root = document.documentElement.style;
+  root.setProperty('--accent', t.accent);
+  root.setProperty('--accent-deep', t.accentDeep);
+  root.setProperty('--ink', t.ink);
+  root.setProperty('--bg', t.bg);
+  root.setProperty('--bg-deep', t.bgDeep);
+  root.setProperty('--title-font', t.font);
+  q('signature').innerHTML = SIGNATURE_HTML[themeKey] || SIGNATURE_HTML.leaves;
+
+  // حركة أوراق طائرة إضافية بالخلفية لثيم "ورق" فقط (نفس فكرة sultan-graduation)
+  if (themeKey === 'leaves') {
+    const hero = q('hero');
+    const leaves = ['🍂','🍃','🍁'];
+    for (let i = 0; i < 8; i++) {
+      const l = document.createElement('div');
+      l.className = 'leaf-ambient';
+      l.textContent = leaves[i % leaves.length];
+      l.style.left = (Math.random()*90+3) + '%';
+      l.style.animationDuration = (7+Math.random()*6) + 's';
+      l.style.animationDelay = (Math.random()*6) + 's';
+      hero.appendChild(l);
+    }
+  }
+}
+
+function formatArabicDate(isoString) {
+  try {
+    const d = new Date(isoString);
+    if (isNaN(d.getTime())) return isoString || '—';
+    return d.toLocaleDateString('ar-OM', { day:'numeric', month:'long', year:'numeric' });
+  } catch (e) { return isoString || '—'; }
+}
+
+function renderCountdown(isoString) {
+  const eventDate = new Date(isoString).getTime();
+  if (isNaN(eventDate)) { q('countdown-section').style.display = 'none'; return; }
+  function update() {
+    const now = new Date().getTime();
+    const diff = eventDate - now;
+    if (diff <= 0) { q('countdown').innerHTML = '<p>اليوم هو اليوم! 🎉</p>'; return; }
+    q('days').textContent  = Math.floor(diff/(1000*60*60*24));
+    q('hours').textContent = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    q('mins').textContent  = Math.floor((diff%(1000*60*60))/(1000*60));
+    q('secs').textContent  = Math.floor((diff%(1000*60))/1000);
+  }
+  update();
+  setInterval(update, 1000);
+}
+
+function renderSchedule(scheduleRaw) {
+  // صيغة عمود schedule الاختياري بالشيت: "18:00|استقبال الضيوف;19:00|بدء الحفل;20:30|العشاء"
+  if (!scheduleRaw) return;
+  const items = String(scheduleRaw).split(';').map(s => s.trim()).filter(Boolean);
+  if (!items.length) return;
+  const list = q('schedule-list');
+  list.innerHTML = '';
+  items.forEach(entry => {
+    const [time, label] = entry.split('|').map(s => (s||'').trim());
+    const row = document.createElement('div');
+    row.className = 'schedule-row';
+    row.innerHTML = `<div class="time">${time||''}</div><div class="item">${label||''}</div>`;
+    list.appendChild(row);
+  });
+  q('schedule-section').style.display = 'block';
+}
+
+function setupRSVP(eventId) {
+  q('rsvp-wrap').style.display = 'block';
+  const btn = q('rsvp-btn');
+  const confirmedState = q('confirmed-state');
+
+  btn.addEventListener('click', async () => {
+    btn.style.display = 'none';
+    confirmedState.style.display = 'flex';
+    await postToApi({ action: 'rsvp', id: eventId, name: '' });
+  });
+
+  const sendNameBtn = q('send-name-btn');
+  const nameInput = q('guest-name-input');
+  const nameSentMsg = q('name-sent');
+  sendNameBtn.addEventListener('click', async () => {
+    document.querySelector('.input-row').style.display = 'none';
+    document.querySelector('.optional-name .hint').style.display = 'none';
+    nameSentMsg.style.display = 'block';
+    const name = nameInput.value.trim();
+    if (name) { await postToApi({ action: 'rsvp_name', id: eventId, name: name }); }
+  });
+}
+
+async function postToApi(payload) {
+  if (!CONFIG.API_URL || CONFIG.API_URL.indexOf('PASTE_YOUR') === 0) return; // لسا ما انربط بالـ backend
+  try {
+    // Content-Type: text/plain يتجنب مشاكل CORS preflight مع Google Apps Script
+    await fetch(CONFIG.API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) { /* فشل الإرسال بصمت — ما نوقف تجربة الضيف */ }
+}
+
+function renderQR() {
+  const box = q('qr-box');
+  const url = window.location.href.split('#')[0];
+  if (window.QRCode) {
+    new QRCode(box, { text: url, width: 130, height: 130, correctLevel: QRCode.CorrectLevel.M });
+  } else {
+    box.textContent = 'QR غير متاح — تحقق من الاتصال';
+    box.style.fontSize = '.7rem'; box.style.color = '#8a8672';
+  }
+}
+
+function buildPage(data) {
+  const eventType = EVENT_TYPES[data.event_type] || EVENT_TYPES.other;
+  const pkg = String(data.package || 'basic').toLowerCase();
+  const status = String(data.status || 'preview').toLowerCase();
+  const themeKey = String(data.theme || 'leaves').toLowerCase();
+
+  applyTheme(themeKey);
+
+  document.title = `${data.name || 'دعوة'} | InviteAI.om`;
+  q('ev-eyebrow').textContent = eventType.eyebrow;
+  q('ev-headline').textContent = eventType.headline;
+  q('ev-name').textContent = data.name || '';
+  q('ev-tagline').textContent = data.note || eventType.defaultTag;
+  q('ev-date-badge').textContent = `${formatArabicDate(data.date)} — ${data.location || ''}`;
+  q('ev-date-text').textContent = formatArabicDate(data.date);
+  q('ev-type-text').textContent = eventType.headline.replace(/[^؀-ۿ\s]/g, '').trim();
+  if (data.location_url) {
+    q('ev-location-text').innerHTML = `<a href="${data.location_url}" target="_blank">${data.location || 'الموقع على الخريطة'}</a>`;
+  } else {
+    q('ev-location-text').textContent = data.location || '—';
+  }
+
+  // الباقة أساسية: بدون عد تنازلي
+  if (pkg === 'basic') { q('countdown-section').style.display = 'none'; }
+  else { renderCountdown(data.date); }
+
+  // الباقة فاخرة فقط: RSVP + برنامج الحفل
+  if (pkg === 'luxury') {
+    setupRSVP(data.id);
+    renderSchedule(data.schedule);
+  }
+
+  renderQR();
+
+  q('ev-footer').textContent = `صفحة ${data.name || ''} — ${eventType.headline.replace(/[^؀-ۿ\s]/g,'').trim()} (باقة ${PACKAGE_LABELS[pkg] || pkg})`;
+
+  // حالة الدفع: نسخة معاينة تعرض علامة مائية + شريط تنبيه
+  if (status === 'preview') {
+    const layer = q('watermark-layer');
+    layer.style.display = 'flex';
+    for (let i = 0; i < 24; i++) {
+      const span = document.createElement('span');
+      span.textContent = 'معاينة — غير مدفوعة بالكامل';
+      layer.appendChild(span);
+    }
+    q('price-banner').style.display = 'block';
+  } else if (status === 'pending') {
+    showError();
+    q('error-state').querySelector('h1').textContent = 'الصفحة قيد التجهيز';
+    q('error-state').querySelector('p').innerHTML = 'صفحتك بانتظار تأكيد العربون، بترجع تشتغل تلقائياً بعد التأكيد.';
+    return false;
+  }
+  // status === 'active' → لا شي إضافي، الصفحة نظيفة بدون علامة مائية
+
+  return true;
+}
+
+async function init() {
+  const id = getParam('id');
+  if (!id) { showError(); return; }
+
+  if (!CONFIG.API_URL || CONFIG.API_URL.indexOf('PASTE_YOUR') === 0) {
+    // وضع تجربة محلي بدون backend بعد — بيانات تجريبية لمعاينة القالب
+    console.warn('CONFIG.API_URL غير معبّى بعد — راجع SETUP.md');
+  }
+
+  try {
+    const res = await fetch(`${CONFIG.API_URL}?id=${encodeURIComponent(id)}`);
+    const data = await res.json();
+    if (!data || data.error) { showError(); return; }
+
+    const ok = buildPage(data);
+    q('loading').style.display = 'none';
+    if (ok !== false) { q('app').style.display = 'block'; }
+  } catch (e) {
+    showError();
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>

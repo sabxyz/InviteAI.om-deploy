@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة متابعة المدعوين — سارة وأحمد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Cairo:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1E241F; --gold:#B8934A; --olive-soft:#7C8E70; --bg:#FAFAF6; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Cairo',sans-serif; background:var(--bg); color:var(--ink); }
+  @media (prefers-reduced-motion: reduce) { *{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
+
+  .private-tag {
+    background:#211F1B; color:#D4AF7A; text-align:center; font-size:.78rem; font-weight:600;
+    padding:10px 16px; line-height:1.7;
+  }
+
+  .header { text-align:center; padding: 36px 24px 20px; }
+  .header .eyebrow { font-size:.74rem; letter-spacing:.15em; color:var(--olive-soft); font-weight:700; }
+  .header h1 { font-family:'Reem Kufi',sans-serif; font-size:1.5rem; margin-top:8px; }
+  .header p { font-size:.85rem; color:#726f61; margin-top:6px; }
+
+  .stat-cards { max-width:460px; margin: 10px auto 30px; padding: 0 20px; display:flex; gap:12px; }
+  .stat-card {
+    flex:1; background:#fff; border-radius:18px; padding: 22px 14px; text-align:center;
+    box-shadow: 0 8px 24px rgba(30,25,15,0.06);
+  }
+  .stat-card .num { font-family:'Reem Kufi',sans-serif; font-size:1.9rem; font-weight:700; color:var(--ink); }
+  .stat-card .lbl { font-size:.74rem; color:#8a8672; margin-top:4px; }
+  .stat-card.highlight { background: var(--ink); color:#fff; }
+  .stat-card.highlight .num { color: var(--gold); }
+  .stat-card.highlight .lbl { color:#A7B39E; }
+
+  .list-section { max-width:460px; margin: 0 auto 40px; padding: 0 20px; }
+  .list-section .section-title { font-size:.82rem; font-weight:700; color:#726f61; margin-bottom:14px; padding-inline-start: 4px; }
+  .guest-list { background:#fff; border-radius:18px; overflow:hidden; box-shadow: 0 8px 24px rgba(30,25,15,0.05); }
+  .guest-row {
+    display:flex; align-items:center; gap:12px; padding:14px 18px;
+    border-bottom:1px solid #F1EFE9;
+  }
+  .guest-row:last-child { border-bottom:none; }
+  .guest-row .avatar {
+    width:34px; height:34px; border-radius:50%; background:#F1EFE9;
+    display:flex; align-items:center; justify-content:center; font-size:.85rem; color:var(--olive-soft); flex-shrink:0;
+  }
+  .guest-row .name { font-size:.88rem; font-weight:600; flex:1; }
+  .guest-row .time { font-size:.72rem; color:#a79e8c; }
+  .guest-row.anon .name { color:#a79e8c; font-weight:400; font-style:italic; }
+
+  .anon-summary {
+    max-width:460px; margin: 0 auto 40px; padding: 16px 24px;
+    background:#F1EFE9; border-radius:16px; text-align:center;
+    font-size:.82rem; color:#726f61; line-height:1.8;
+  }
+  .anon-summary strong { color: var(--ink); }
+
+  .share-note {
+    max-width:460px; margin: 0 auto 50px; padding: 18px 22px;
+    background:#211F1B; color:#EFEAE0; border-radius:16px;
+    font-size:.8rem; line-height:1.8; text-align:center;
+  }
+  .share-note strong { color:#D4AF7A; }
+</style>
+</head>
+<body>
+
+<div class="private-tag">🔒 هذي صفحة خاصة — تظهر فقط لصاحب المناسبة عبر رابط سري منفصل، ولا يقدر يوصلها أي زائر عادي</div>
+
+<div class="header">
+  <div class="eyebrow">GUEST DASHBOARD</div>
+  <h1>لوحة متابعة المدعوين</h1>
+  <p>زواج سارة وأحمد — ١٥ نوفمبر ٢٠٢٦</p>
+</div>
+
+<div class="stat-cards">
+  <div class="stat-card highlight">
+    <div class="num">63</div>
+    <div class="lbl">إجمالي المؤكدين</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">28</div>
+    <div class="lbl">كتبوا أسماءهم</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">35</div>
+    <div class="lbl">بدون اسم</div>
+  </div>
+</div>
+
+<div class="list-section">
+  <div class="section-title">آخر المؤكدين (بالاسم)</div>
+  <div class="guest-list">
+    <div class="guest-row"><div class="avatar">م</div><div class="name">محمد الشيدي</div><div class="time">منذ 12 دقيقة</div></div>
+    <div class="guest-row"><div class="avatar">ن</div><div class="name">نورة السعدية</div><div class="time">منذ 40 دقيقة</div></div>
+    <div class="guest-row"><div class="avatar">خ</div><div class="name">خالد بن راشد</div><div class="time">منذ ساعة</div></div>
+    <div class="guest-row"><div class="avatar">ه</div><div class="name">هدى العوانية</div><div class="time">منذ 3 ساعات</div></div>
+    <div class="guest-row anon"><div class="avatar">؟</div><div class="name">ضيف لم يكتب اسمه</div><div class="time">منذ 3 ساعات</div></div>
+  </div>
+</div>
+
+<div class="anon-summary">
+  👤 <strong>35 ضيف</strong> أكدوا حضورهم بضغطة واحدة بدون كتابة أسمائهم — هذا طبيعي ومتوقع، والعدد محتسب ضمن الإجمالي فوق.
+</div>
+
+<div class="share-note">
+  💡 <strong>ملاحظة للزبون:</strong> هذا الرابط خاص فيك أنت بس، احتفظ فيه ولا تشاركه مع أحد. لو حبيت تشاركه مع شخص موثوق (منظم الحفل مثلاً)، أرسله له مباشرة.
+</div>
+
+</body>
+</html>

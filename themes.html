@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>معرض الثيمات — ٧ تصاميم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@400;500;700&family=Cairo:wght@200;300;400;600;800&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Cairo',sans-serif; background:#F6F5F1; }
+  @media (prefers-reduced-motion: reduce) { *{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
+
+  .page-header { text-align:center; padding: 46px 24px 18px; }
+  .page-header .eyebrow { font-size:.76rem; letter-spacing:.2em; color:#A79E8C; font-weight:700; }
+  .page-header h1 { font-weight:800; font-size:1.55rem; color:#211F1B; margin-top:8px; }
+  .page-header p { font-size:.86rem; color:#6b6a5c; margin-top:8px; max-width:340px; margin-inline:auto; line-height:1.8; }
+
+  .gallery { max-width: 480px; margin: 0 auto; padding: 10px 20px 60px; display:flex; flex-direction:column; gap:34px; }
+
+  .theme-block { background:#fff; border-radius:24px; overflow:hidden; box-shadow:0 14px 36px rgba(30,25,15,0.06); }
+  .meta { padding: 18px 22px 22px; text-align:center; }
+  .meta .name { font-weight:800; font-size:1.02rem; color:#211F1B; }
+  .meta .desc { font-size:.8rem; color:#7a7868; margin-top:5px; line-height:1.7; }
+  .select-btn {
+    display:block; width: calc(100% - 44px); margin: 12px auto 0;
+    padding: 12px 0; border:none; border-radius: 30px;
+    font-family:'Cairo',sans-serif; font-weight:700; font-size:.85rem;
+    cursor:pointer; transition: transform .2s, box-shadow .2s;
+  }
+  .select-btn:active { transform: scale(0.97); }
+  .preview { padding: 38px 22px 26px; text-align:center; position:relative; overflow:hidden; }
+  .eyebrow2 { font-size:.7rem; letter-spacing:.22em; font-weight:700; }
+  .details2 { display:flex; gap:10px; margin-top:18px; }
+  .details2 .col { flex:1; border-radius:14px; padding:11px 8px; font-size:.76rem; }
+  .details2 .k { font-weight:700; font-size:.66rem; display:block; margin-bottom:4px; }
+
+  /* 1: نبض */
+  .s-pulse { background: linear-gradient(180deg,#FDF3F1,#FEFAF8); }
+  .s-pulse .heart-wrap { position:relative; width:64px; height:56px; margin:0 auto 6px; }
+  .s-pulse .heart { position:absolute; inset:0; font-size:2.1rem; display:flex; align-items:center; justify-content:center; animation: heartbeat 1.8s ease-in-out infinite; }
+  @keyframes heartbeat { 0%,100%{transform:scale(1);} 14%{transform:scale(1.18);} 28%{transform:scale(0.96);} 42%{transform:scale(1.1);} 70%{transform:scale(1);} }
+  .s-pulse .ring { position:absolute; inset:0; border:1.5px solid #E9B4B4; border-radius:50%; animation: ringPulse 1.8s ease-out infinite; }
+  @keyframes ringPulse { 0%{transform:scale(0.6); opacity:.6;} 100%{transform:scale(1.6); opacity:0;} }
+  .s-pulse .eyebrow2 { color:#C98A7D; }
+  .s-pulse .title { font-family:'Aref Ruqaa',serif; font-weight:700; font-size:2rem; color:#3A2C28; margin-top:6px; }
+  .s-pulse .tag { font-size:.8rem; color:#8a7c78; margin-top:6px; line-height:1.7; }
+  .s-pulse .col { background:#fff; box-shadow:0 6px 16px rgba(217,138,138,0.08); color:#5c5350; }
+  .s-pulse .k { color:#C98A7D; }
+  .btn-pulse { background:#C98A7D; color:#fff; }
+
+  /* 2: توهج */
+  .s-glow { background: linear-gradient(180deg,#FBF9F3,#FFF); }
+  .s-glow .icon-ring { width:52px; height:52px; margin:0 auto 12px; border-radius:50%; border:1px solid #D4AF7A; display:flex; align-items:center; justify-content:center; font-size:1.15rem; color:#B8934A; animation: gentleSpin 12s linear infinite; }
+  @keyframes gentleSpin { from{transform:rotate(0);} to{transform:rotate(360deg);} }
+  .s-glow .eyebrow2 { color:#B8934A; }
+  .s-glow .title { font-family:'Reem Kufi',sans-serif; font-weight:700; font-size:1.9rem; color:#2B2820; margin-top:6px; }
+  .s-glow .tag { font-size:.8rem; color:#8a8672; margin-top:6px; line-height:1.7; }
+  .s-glow .col { background:#FBF9F3; border:1px solid #EDE6D3; color:#5c5a4d; }
+  .s-glow .k { color:#B8934A; }
+  .btn-glow { background:#B8934A; color:#fff; }
+
+  /* 3: تفتّح */
+  .s-bloom { background: linear-gradient(180deg,#F2F8F4,#FCFEFC); }
+  .s-bloom .flower-wrap { position:relative; width:56px; height:56px; margin:0 auto 8px; }
+  .s-bloom .petal { position:absolute; top:50%; left:50%; width:18px; height:18px; background:#A9CBB0; border-radius:60% 0 60% 0; transform-origin:0% 100%; animation: bloomOpen 3.2s ease-in-out infinite; }
+  .s-bloom .petal:nth-child(1){ transform:translate(-50%,-100%) rotate(0deg); }
+  .s-bloom .petal:nth-child(2){ transform:translate(-50%,-100%) rotate(72deg); animation-delay:.15s; }
+  .s-bloom .petal:nth-child(3){ transform:translate(-50%,-100%) rotate(144deg); animation-delay:.3s; }
+  .s-bloom .petal:nth-child(4){ transform:translate(-50%,-100%) rotate(216deg); animation-delay:.45s; }
+  .s-bloom .petal:nth-child(5){ transform:translate(-50%,-100%) rotate(288deg); animation-delay:.6s; }
+  @keyframes bloomOpen { 0%,100%{opacity:.55;} 50%{opacity:1;} }
+  .s-bloom .dot { position:absolute; top:50%; left:50%; width:10px; height:10px; background:#E8C36B; border-radius:50%; transform:translate(-50%,-50%); z-index:2; }
+  .s-bloom .eyebrow2 { color:#6E9478; }
+  .s-bloom .title { font-family:'Reem Kufi',sans-serif; font-weight:700; font-size:1.9rem; color:#2D3B31; margin-top:6px; }
+  .s-bloom .tag { font-size:.8rem; color:#7c8a7e; margin-top:6px; line-height:1.7; }
+  .s-bloom .col { background:#fff; box-shadow:0 6px 16px rgba(110,148,120,0.08); color:#5c5f56; }
+  .s-bloom .k { color:#6E9478; }
+  .btn-bloom { background:#6E9478; color:#fff; }
+
+  /* 4: سكون (موجة) */
+  .s-calm { background: linear-gradient(180deg,#EFF5F8,#FFF); }
+  .s-calm .ripple-wrap { position:relative; width:56px; height:56px; margin:0 auto 10px; }
+  .s-calm .drop { position:absolute; top:50%; left:50%; width:8px; height:8px; background:#6FA8B8; border-radius:50%; transform:translate(-50%,-50%); z-index:2; }
+  .s-calm .rwave { position:absolute; top:50%; left:50%; width:8px; height:8px; border:1.5px solid #9CC3CF; border-radius:50%; transform:translate(-50%,-50%); animation: rippleOut 2.6s ease-out infinite; }
+  .s-calm .rwave:nth-child(2){ animation-delay:.9s; }
+  .s-calm .rwave:nth-child(3){ animation-delay:1.8s; }
+  @keyframes rippleOut { 0%{ width:8px; height:8px; opacity:.7; } 100%{ width:56px; height:56px; opacity:0; } }
+  .s-calm .eyebrow2 { color:#5F93A3; }
+  .s-calm .title { font-family:'Reem Kufi',sans-serif; font-weight:700; font-size:1.9rem; color:#233A42; margin-top:6px; }
+  .s-calm .tag { font-size:.8rem; color:#6f8790; margin-top:6px; line-height:1.7; }
+  .s-calm .col { background:#EFF5F8; border:1px solid #DCEAEE; color:#405860; }
+  .s-calm .k { color:#5F93A3; }
+  .btn-calm { background:#5F93A3; color:#fff; }
+
+  /* 5: إشراق (شمس) */
+  .s-radiance { background: linear-gradient(180deg,#FDF4EA,#FFF); }
+  .s-radiance .sun-wrap { position:relative; width:60px; height:60px; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; }
+  .s-radiance .sun-core { width:24px; height:24px; border-radius:50%; background:#E0A458; animation: sunPulse 2.4s ease-in-out infinite; box-shadow:0 0 16px 4px rgba(224,164,88,0.35); }
+  @keyframes sunPulse { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.15); } }
+  .s-radiance .rays { position:absolute; inset:0; animation: raySpin 20s linear infinite; }
+  .s-radiance .rays::before, .s-radiance .rays::after {
+    content:""; position:absolute; background:#F0C68A; border-radius:2px;
+  }
+  .s-radiance .rays::before { top:0; left:50%; width:2px; height:12px; transform:translateX(-50%); }
+  .s-radiance .rays::after { bottom:0; left:50%; width:2px; height:12px; transform:translateX(-50%); }
+  @keyframes raySpin { from{transform:rotate(0);} to{transform:rotate(360deg);} }
+  .s-radiance .eyebrow2 { color:#C98A3A; }
+  .s-radiance .title { font-family:'Reem Kufi',sans-serif; font-weight:700; font-size:1.9rem; color:#4A3418; margin-top:6px; }
+  .s-radiance .tag { font-size:.8rem; color:#8a7358; margin-top:6px; line-height:1.7; }
+  .s-radiance .col { background:#fff; box-shadow:0 6px 16px rgba(224,164,88,0.1); color:#5c4f3e; }
+  .s-radiance .k { color:#C98A3A; }
+  .btn-radiance { background:#D99B4E; color:#fff; }
+
+  /* 6: لألاء (نجوم) */
+  .s-twinkle { background: linear-gradient(180deg,#F5F2FA,#FFF); }
+  .s-twinkle .stars-wrap { position:relative; width:70px; height:44px; margin:0 auto 8px; }
+  .s-twinkle .star { position:absolute; font-size:1rem; color:#9B85B8; animation: twinkle 2.4s ease-in-out infinite; }
+  .s-twinkle .star:nth-child(1){ top:2px; left:6px; animation-delay:0s; }
+  .s-twinkle .star:nth-child(2){ top:14px; left:30px; font-size:1.4rem; animation-delay:.5s; }
+  .s-twinkle .star:nth-child(3){ top:0; left:52px; animation-delay:1s; }
+  .s-twinkle .star:nth-child(4){ top:22px; left:8px; font-size:.75rem; animation-delay:1.4s; }
+  @keyframes twinkle { 0%,100%{ opacity:.25; transform:scale(0.85); } 50%{ opacity:1; transform:scale(1.1); } }
+  .s-twinkle .eyebrow2 { color:#8A6FAE; }
+  .s-twinkle .title { font-family:'Reem Kufi',sans-serif; font-weight:700; font-size:1.9rem; color:#332B44; margin-top:2px; }
+  .s-twinkle .tag { font-size:.8rem; color:#7c7290; margin-top:6px; line-height:1.7; }
+  .s-twinkle .col { background:#F5F2FA; border:1px solid #E5DEF0; color:#4a4358; }
+  .s-twinkle .k { color:#8A6FAE; }
+  .btn-twinkle { background:#8A6FAE; color:#fff; }
+
+  /* 7: ورق (أوراق متساقطة) */
+  .s-leaves { background: linear-gradient(180deg,#F5F3EC,#FFF); }
+  .s-leaves .leaf-wrap { position:relative; width:70px; height:56px; margin:0 auto 8px; }
+  .s-leaves .leaf { position:absolute; font-size:1.2rem; top:-6px; animation: leafFall 4s ease-in infinite; }
+  .s-leaves .leaf:nth-child(1){ left:8px; animation-delay:0s; }
+  .s-leaves .leaf:nth-child(2){ left:32px; animation-delay:1.3s; font-size:1rem; }
+  .s-leaves .leaf:nth-child(3){ left:52px; animation-delay:2.6s; }
+  @keyframes leafFall {
+    0% { transform: translateY(0) rotate(0deg); opacity:0; }
+    15% { opacity:1; }
+    85% { opacity:1; }
+    100% { transform: translateY(50px) rotate(140deg); opacity:0; }
+  }
+  .s-leaves .eyebrow2 { color:#8C9B6E; }
+  .s-leaves .title { font-family:'Reem Kufi',sans-serif; font-weight:700; font-size:1.9rem; color:#3A3E2C; margin-top:2px; }
+  .s-leaves .tag { font-size:.8rem; color:#84876f; margin-top:6px; line-height:1.7; }
+  .s-leaves .col { background:#fff; box-shadow:0 6px 16px rgba(140,155,110,0.08); color:#4f5240; }
+  .s-leaves .k { color:#8C9B6E; }
+  .btn-leaves { background:#8C9B6E; color:#fff; }
+
+  .instructions {
+    max-width: 480px; margin: 0 auto 50px; padding: 20px 24px;
+    background: #211F1B; color: #EFEAE0; border-radius: 18px;
+    font-size: .85rem; line-height: 1.9; text-align:center;
+  }
+  .instructions strong { color: #D4AF7A; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="eyebrow">7 THEMES · LIGHT & ANIMATED</div>
+  <h1>مكتبة الثيمات الكاملة 🎨</h1>
+  <p>٧ تصاميم فاتحة وعصرية، كل وحدة بحركة توقيعية تناسب طابع مناسبتها.</p>
+</div>
+
+<div class="gallery">
+
+  <div class="theme-block">
+    <div class="preview s-pulse">
+      <div class="heart-wrap"><div class="ring"></div><div class="heart">💗</div></div>
+      <div class="eyebrow2">TOGETHER FOREVER</div>
+      <div class="title">سارة و أحمد</div>
+      <p class="tag">قلبان ينبضان بحب واحد</p>
+      <div class="details2"><div class="col"><span class="k">📍 الموقع</span>قاعة الأنوار</div><div class="col"><span class="k">🕐 التاريخ</span>١٥ نوفمبر</div></div>
+    </div>
+    <div class="meta"><div class="name">💗 نبض</div><div class="desc">قلب ينبض بهالة متوهجة — للأعراس، الخطوبة، وذكرى الزواج</div></div>
+    <button class="select-btn btn-pulse" data-theme="pulse">اختار هذا الثيم</button>
+  </div>
+
+  <div class="theme-block">
+    <div class="preview s-glow">
+      <div class="icon-ring">✦</div>
+      <div class="eyebrow2">YOU'RE INVITED</div>
+      <div class="title">دعوة خاصة</div>
+      <p class="tag">يسعدنا حضوركم لمشاركتنا هذه اللحظة</p>
+      <div class="details2"><div class="col"><span class="k">📍 الموقع</span>فندق الخليج</div><div class="col"><span class="k">🕐 التاريخ</span>٢٠ يونيو</div></div>
+    </div>
+    <div class="meta"><div class="name">✨ توهج</div><div class="desc">جسيمات ذهبية وحلقة دوارة هادئة — يناسب أي مناسبة عامة</div></div>
+    <button class="select-btn btn-glow" data-theme="glow">اختار هذا الثيم</button>
+  </div>
+
+  <div class="theme-block">
+    <div class="preview s-bloom">
+      <div class="flower-wrap"><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="dot"></div></div>
+      <div class="eyebrow2">LITTLE CELEBRATION</div>
+      <div class="title">عام أول لفهد</div>
+      <p class="tag">فرحة تتفتّح مثل الزهور</p>
+      <div class="details2"><div class="col"><span class="k">📍 الموقع</span>حديقة القرم</div><div class="col"><span class="k">🕐 التاريخ</span>٣ ديسمبر</div></div>
+    </div>
+    <div class="meta"><div class="name">🌸 تفتّح</div><div class="desc">زهرة تتفتح بحركة ناعمة — لأعياد الميلاد والمناسبات العائلية</div></div>
+    <button class="select-btn btn-bloom" data-theme="bloom">اختار هذا الثيم</button>
+  </div>
+
+  <div class="theme-block">
+    <div class="preview s-calm">
+      <div class="ripple-wrap"><div class="rwave"></div><div class="rwave"></div><div class="rwave"></div><div class="drop"></div></div>
+      <div class="eyebrow2">CLASS OF 2027</div>
+      <div class="title">تخرج نور</div>
+      <p class="tag">بداية جديدة تستحق الاحتفال</p>
+      <div class="details2"><div class="col"><span class="k">📍 الموقع</span>فندق الخليج</div><div class="col"><span class="k">🕐 التاريخ</span>٢٠ يونيو</div></div>
+    </div>
+    <div class="meta"><div class="name">🌊 سكون</div><div class="desc">موجات دائرية هادئة تتمدد — للتخرج والمناسبات الرسمية والاحترافية</div></div>
+    <button class="select-btn btn-calm" data-theme="calm">اختار هذا الثيم</button>
+  </div>
+
+  <div class="theme-block">
+    <div class="preview s-radiance">
+      <div class="sun-wrap"><div class="rays"></div><div class="sun-core"></div></div>
+      <div class="eyebrow2">CELEBRATION DAY</div>
+      <div class="title">فرحتنا بكم</div>
+      <p class="tag">يوم مشرق يستحق أجمل احتفال</p>
+      <div class="details2"><div class="col"><span class="k">📍 الموقع</span>قاعة الواحة</div><div class="col"><span class="k">🕐 التاريخ</span>١٠ أبريل</div></div>
+    </div>
+    <div class="meta"><div class="name">☀️ إشراق</div><div class="desc">شمس نابضة بأشعة دوّارة — للأعياد، المناسبات الوطنية، والاحتفالات العامة</div></div>
+    <button class="select-btn btn-radiance" data-theme="radiance">اختار هذا الثيم</button>
+  </div>
+
+  <div class="theme-block">
+    <div class="preview s-twinkle">
+      <div class="stars-wrap"><div class="star">✦</div><div class="star">✧</div><div class="star">✦</div><div class="star">✧</div></div>
+      <div class="eyebrow2">AN EVENING TO REMEMBER</div>
+      <div class="title">سهرة خاصة</div>
+      <p class="tag">أمسية مميزة تحت النجوم</p>
+      <div class="details2"><div class="col"><span class="k">📍 الموقع</span>تراس اللؤلؤة</div><div class="col"><span class="k">🕐 التاريخ</span>٥ مايو</div></div>
+    </div>
+    <div class="meta"><div class="name">🌙 لألاء</div><div class="desc">نجوم تتلألأ بشكل عشوائي — لحفلات الخطوبة والسهرات المسائية</div></div>
+    <button class="select-btn btn-twinkle" data-theme="twinkle">اختار هذا الثيم</button>
+  </div>
+
+  <div class="theme-block">
+    <div class="preview s-leaves">
+      <div class="leaf-wrap"><div class="leaf">🍃</div><div class="leaf">🍃</div><div class="leaf">🍃</div></div>
+      <div class="eyebrow2">A NEW CHAPTER</div>
+      <div class="title">وداعاً وشكراً</div>
+      <p class="tag">فصل ينتهي وآخر جميل يبدأ</p>
+      <div class="details2"><div class="col"><span class="k">📍 الموقع</span>قاعة النخيل</div><div class="col"><span class="k">🕐 التاريخ</span>٢٨ مايو</div></div>
+    </div>
+    <div class="meta"><div class="name">🍃 ورق</div><div class="desc">أوراق تتساقط بهدوء وتدور — للتخرج، حفلات الوداع، والمناسبات الموسمية</div></div>
+    <button class="select-btn btn-leaves" data-theme="leaves">اختار هذا الثيم</button>
+  </div>
+
+</div>
+
+<div class="instructions">
+  📋 بعد اختيار الثيم، افتح الفورم واكتب اسمه بخانة "الثيم المفضل" — مثال: <strong>calm</strong> أو <strong>radiance</strong>
+</div>
+
+<script>
+  document.querySelectorAll('.select-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const themeId = btn.dataset.theme;
+      try { await navigator.clipboard.writeText(themeId); } catch (e) {}
+      const original = btn.textContent;
+      btn.textContent = 'تم نسخ اسم الثيم ✓';
+      setTimeout(() => { btn.textContent = original; }, 1800);
+    });
+  });
+</script>
+
+</body>
+</html>

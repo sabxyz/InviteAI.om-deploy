@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سلطان | حفل تخرج</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Cairo:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F3EC; --bg-deep: #EDEADF;
+    --olive: #6E7B52; --olive-deep: #3F4A2E;
+    --gold: #C9A961; --ink: #2B2B22;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family:'Cairo',sans-serif; overflow-x:hidden; position:relative; }
+  @media (prefers-reduced-motion: reduce) { *{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
+
+  .status-bar {
+    position: sticky; top:0; z-index:999;
+    background:#211F1B; color:#EFEAE0; text-align:center;
+    padding:12px 16px; font-size:.8rem; display:flex; gap:10px; justify-content:center; align-items:center; flex-wrap:wrap;
+  }
+  .status-bar button {
+    background: var(--gold); color:#2B2B22; border:none; padding:6px 16px; border-radius:16px;
+    font-family:'Cairo',sans-serif; font-weight:700; font-size:.76rem; cursor:pointer;
+  }
+
+  #watermark-layer {
+    position: fixed; inset:0; z-index:500; pointer-events:none;
+    display:flex; flex-wrap:wrap; align-content:space-around; justify-content:space-around;
+    transform: rotate(-26deg) scale(1.4); transition: opacity .5s ease;
+  }
+  #watermark-layer span { font-size:1.1rem; font-weight:700; color: rgba(43,43,34,0.07); white-space:nowrap; padding:26px 34px; }
+
+  .price-banner {
+    position: fixed; bottom:0; right:0; left:0; z-index:998;
+    background: var(--olive-deep); color:#fff; text-align:center; padding:14px 20px; font-size:.85rem;
+    transition: transform .4s ease, opacity .4s ease;
+  }
+  .price-banner button {
+    background: var(--gold); color:var(--olive-deep); border:none; padding:8px 20px; margin-right:10px;
+    font-weight:700; cursor:pointer; font-family:'Cairo',sans-serif; border-radius:16px;
+  }
+
+  .leaf-ambient { position:absolute; top:0; font-size:1.4rem; opacity:.75; animation: leafFall linear infinite; }
+  @keyframes leafFall {
+    0% { transform: translateY(-5%) rotate(0deg); opacity:0; }
+    10% { opacity:.75; }
+    90% { opacity:.75; }
+    100% { transform: translateY(105vh) rotate(220deg); opacity:0; }
+  }
+
+  .hero {
+    min-height: 78svh; position:relative; overflow:hidden;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:50px 24px;
+    background: radial-gradient(ellipse at top, var(--bg-deep) 0%, var(--bg) 70%);
+  }
+  .eyebrow { font-size:.78rem; letter-spacing:.25em; color: var(--olive); font-weight:700; position:relative; z-index:2; }
+  .grad-title { font-family:'Reem Kufi',sans-serif; font-weight:700; font-size:clamp(2.4rem,9vw,3.6rem); color: var(--olive-deep); margin:16px 0 6px; position:relative; z-index:2; }
+  .grad-name { font-size:1.3rem; font-weight:800; color: var(--ink); position:relative; z-index:2; }
+  .major { font-size:.9rem; color:#6b6a5c; margin-top:4px; position:relative; z-index:2; }
+  .tagline { font-weight:300; font-size:1rem; max-width:340px; line-height:1.9; color:#5c5f4d; margin:16px auto 0; position:relative; z-index:2; }
+  .date-badge { margin-top:22px; padding:9px 24px; background:#fff; border-radius:30px; font-size:.85rem; font-weight:600; display:inline-block; position:relative; z-index:2; box-shadow:0 6px 18px rgba(110,123,82,0.1); }
+
+  section { padding:56px 24px; max-width:460px; margin:0 auto; text-align:center; }
+  .label { font-size:.74rem; letter-spacing:.18em; color: var(--olive); font-weight:700; margin-bottom:14px; text-transform:uppercase; }
+  h2 { font-family:'Reem Kufi',sans-serif; font-size:1.4rem; color: var(--olive-deep); margin-bottom:18px; font-weight:500; }
+
+  .countdown { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+  .count-box .num { font-size:1.8rem; font-weight:800; color: var(--olive-deep); font-family:'Reem Kufi',sans-serif; }
+  .count-box .unit { font-size:.66rem; color:#8a8a78; margin-top:2px; }
+
+  .details-grid { display:flex; gap:10px; }
+  .detail-card { flex:1; background:#fff; border-radius:16px; padding:16px 10px; box-shadow:0 6px 18px rgba(110,123,82,0.08); }
+  .detail-card .icon { font-size:1.2rem; margin-bottom:6px; }
+  .detail-card .k { font-size:.68rem; color: var(--olive); font-weight:700; margin-bottom:3px; }
+  .detail-card .v { font-size:.82rem; }
+
+  .qr-note { padding:50px 24px 90px; text-align:center; }
+  .qr-box { width:120px; height:120px; margin:0 auto 14px; background:#fff; border-radius:20px; box-shadow:0 8px 24px rgba(110,123,82,0.08); display:flex; align-items:center; justify-content:center; font-size:.68rem; color: var(--olive); }
+  footer { text-align:center; padding:24px 24px 100px; font-size:.72rem; color:#9a9a86; }
+</style>
+</head>
+<body>
+
+<div class="status-bar" id="status-bar">
+  <span id="status-text">🔒 حالة: معاينة (بانتظار إتمام الدفع)</span>
+  <button id="toggle-btn">محاكاة الدفع النهائي ✅</button>
+</div>
+
+<div id="watermark-layer"></div>
+
+<section class="hero" id="hero">
+  <div class="eyebrow">CLASS OF 2026</div>
+  <div class="grad-title">مبروك التخرج 🎓</div>
+  <div class="grad-name">سلطان</div>
+  <div class="major">إدارة أعمال</div>
+  <p class="tagline">فصل ينتهي وآخر جميل يبدأ — يسعدنا حضوركم للاحتفال بهذا الإنجاز</p>
+  <div class="date-badge">20 سبتمبر 2026 — جسق</div>
+</section>
+
+<section>
+  <div class="label">العد التنازلي</div>
+  <h2>باقي على الحفل</h2>
+  <div class="countdown" id="countdown">
+    <div class="count-box"><div class="num" id="days">--</div><div class="unit">يوم</div></div>
+    <div class="count-box"><div class="num" id="hours">--</div><div class="unit">ساعة</div></div>
+    <div class="count-box"><div class="num" id="mins">--</div><div class="unit">دقيقة</div></div>
+    <div class="count-box"><div class="num" id="secs">--</div><div class="unit">ثانية</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">التفاصيل</div>
+  <h2>موعد ومكان الحفل</h2>
+  <div class="details-grid">
+    <div class="detail-card"><div class="icon">📅</div><div class="k">التاريخ</div><div class="v">20 سبتمبر</div></div>
+    <div class="detail-card"><div class="icon">🎓</div><div class="k">التخصص</div><div class="v">إدارة أعمال</div></div>
+    <div class="detail-card"><div class="icon">📍</div><div class="k">المكان</div><div class="v">جسق</div></div>
+  </div>
+</section>
+
+<section class="qr-note">
+  <div class="label">للدعوات المطبوعة</div>
+  <div class="qr-box">QR Code هنا</div>
+  <p style="font-size:.85rem; color:#6b6a5c; font-weight:300;">امسح الكود من بطاقة الدعوة للوصول مباشرة لهذي الصفحة</p>
+</section>
+
+<footer>صفحة سلطان — تخرج 🍃 (باقة مميزة)</footer>
+
+<div class="price-banner" id="price-banner">
+  💳 هذي نسخة معاينة — أكمل الدفع (10 ر.ع المتبقية) لإزالة العلامة المائية واستلام الرابط والـQR النهائي
+  <button onclick="document.getElementById('toggle-btn').click()">إتمام الدفع</button>
+</div>
+
+<script>
+  const heroSection = document.getElementById('hero');
+  const leaves = ['🍂','🍃','🍁'];
+  for (let i=0;i<8;i++){
+    const l = document.createElement('div');
+    l.className='leaf-ambient';
+    l.textContent = leaves[i % leaves.length];
+    l.style.left = (Math.random()*90+3)+'%';
+    l.style.animationDuration = (7+Math.random()*6)+'s';
+    l.style.animationDelay = (Math.random()*6)+'s';
+    heroSection.appendChild(l);
+  }
+
+  const layer = document.getElementById('watermark-layer');
+  for (let i=0;i<24;i++){
+    const span = document.createElement('span');
+    span.textContent = 'معاينة — غير مدفوعة بالكامل';
+    layer.appendChild(span);
+  }
+
+  let paid = false;
+  const toggleBtn = document.getElementById('toggle-btn');
+  const statusText = document.getElementById('status-text');
+  const banner = document.getElementById('price-banner');
+
+  toggleBtn.addEventListener('click', () => {
+    paid = !paid;
+    if (paid) {
+      layer.style.opacity = '0';
+      statusText.textContent = '✅ حالة: مدفوعة بالكامل — نسخة نهائية';
+      banner.style.transform = 'translateY(100%)';
+      banner.style.opacity = '0';
+      toggleBtn.textContent = 'رجوع لحالة المعاينة 🔒';
+    } else {
+      layer.style.opacity = '1';
+      statusText.textContent = '🔒 حالة: معاينة (بانتظار إتمام الدفع)';
+      banner.style.transform = 'translateY(0)';
+      banner.style.opacity = '1';
+      toggleBtn.textContent = 'محاكاة الدفع النهائي ✅';
+    }
+  });
+
+  const eventDate = new Date("2026-09-20T18:00:00+04:00").getTime();
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const diff = eventDate - now;
+    if (diff <= 0) { document.getElementById("countdown").innerHTML = "<p>اليوم هو اليوم! 🎉</p>"; return; }
+    document.getElementById("days").textContent = Math.floor(diff/(1000*60*60*24));
+    document.getElementById("hours").textContent = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    document.getElementById("mins").textContent = Math.floor((diff%(1000*60*60))/(1000*60));
+    document.getElementById("secs").textContent = Math.floor((diff%(1000*60))/1000);
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
