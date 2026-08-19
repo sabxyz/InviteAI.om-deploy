@@ -281,6 +281,7 @@ function handleTelegramUpdate_(update) {
     const chatId = msg.chat.id;
     // تيليجرام أحياناً يرسل الأمر بصيغة "/status@اسم_البوت" (خصوصاً لو انتقي من قائمة الأوامر) — نتجاهل الجزء بعد @
     const text = (msg.text || '').trim().split('@')[0];
+    Logger.log(`DEBUG incoming message — raw: ${JSON.stringify(msg.text)} | parsed text: ${JSON.stringify(text)} | chatId: ${chatId} | isOwner: ${isOwner_(chatId)}`);
 
     if (!isOwner_(chatId)) {
       // أول رسالة من صاحب المشروع تُستخدم للتعرّف على OWNER_CHAT_ID لو ما كان معبّى بعد
